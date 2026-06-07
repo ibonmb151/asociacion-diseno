@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Space_Grotesk, Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
 import { Navbar } from "@/components/Navbar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-heading",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Design Association Hub",
-    default: "Design Association Hub",
+    template: "%s | Asociación de Diseño",
+    default: "Asociación de Diseño",
   },
   description:
     "Plataforma que conecta estudiantes de diseño con empresas. Crea tu portfolio, participa en el foro, y encuentra oportunidades profesionales.",
@@ -30,9 +32,9 @@ export const metadata: Metadata = {
     "foro",
     "networking",
   ],
-  authors: [{ name: "Design Association Hub" }],
+  authors: [{ name: "Asociación de Diseño" }],
   openGraph: {
-    title: "Design Association Hub",
+    title: "Asociación de Diseño",
     description:
       "Plataforma que conecta estudiantes de diseño con empresas.",
     type: "website",
@@ -48,9 +50,9 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white">
+      <body className="min-h-full flex flex-col bg-white font-body">
         <SessionProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

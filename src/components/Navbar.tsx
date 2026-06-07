@@ -95,7 +95,7 @@ export function Navbar() {
           className="flex items-center gap-2 text-xl font-bold tracking-tight text-primary"
         >
           <Sparkles className="h-6 w-6 text-secondary" />
-          <span>Design Hub</span>
+          <span className="font-heading">Asociación de Diseño</span>
         </Link>
 
         {/* Desktop Navigation */}
