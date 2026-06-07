@@ -5,16 +5,15 @@ import { prisma } from "@/lib/prisma";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password, name, type, companyName, description } = body;
+    const { email, password, name, role, description } = body;
 
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
-    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -22,37 +21,35 @@ export async function POST(request: Request) {
     if (existingUser) {
       return NextResponse.json(
         { error: "A user with this email already exists" },
-        { status: 409 }
+        { status: 409 },
       );
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    if (type === "company") {
-      // Create company account
-      if (!companyName) {
+    if (role === "COMPANY") {
+      if (!name) {
         return NextResponse.json(
           { error: "Company name is required" },
-          { status: 400 }
+          { status: 400 },
         );
       }
 
-      const company = await prisma.company.create({
-        data: {
-          name: companyName,
-          email,
-          password: hashedPassword,
-          description: description || "",
-        },
-      });
-
-      // Also create a user entry for the company (for auth session)
       const user = await prisma.user.create({
         data: {
-          name: companyName,
+          name,
           email,
           password: hashedPassword,
           role: "COMPANY",
+        },
+      });
+
+      await prisma.company.create({
+        data: {
+          name,
+          email,
+          password: hashedPassword,
+          description: description || "",
         },
       });
 
@@ -61,11 +58,10 @@ export async function POST(request: Request) {
           message: "Company registered successfully",
           user: { id: user.id, email: user.email, name: user.name },
         },
-        { status: 201 }
+        { status: 201 },
       );
     }
 
-    // Create student account
     const user = await prisma.user.create({
       data: {
         name: name || "",
@@ -75,7 +71,6 @@ export async function POST(request: Request) {
       },
     });
 
-    // Create student profile
     await prisma.studentProfile.create({
       data: {
         userId: user.id,
@@ -87,13 +82,13 @@ export async function POST(request: Request) {
         message: "User registered successfully",
         user: { id: user.id, email: user.email, name: user.name },
       },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (error) {
     console.error("Registration error:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

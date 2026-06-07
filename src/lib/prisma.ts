@@ -1,4 +1,6 @@
 import { PrismaClient } from "@/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import pg from "pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -9,8 +11,9 @@ function createClient(): PrismaClient {
   if (!url) {
     throw new Error("DATABASE_URL environment variable is not set");
   }
-  // Prisma v7 client requires either adapter or accelerateUrl
-  return new (PrismaClient as any)({ accelerateUrl: url }) as PrismaClient;
+  const pool = new pg.Pool({ connectionString: url });
+  const adapter = new PrismaPg(pool);
+  return new (PrismaClient as any)({ adapter }) as PrismaClient;
 }
 
 export const prisma = globalForPrisma.prisma ?? createClient();

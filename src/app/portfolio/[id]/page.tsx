@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth/auth";
-import { Pencil, Trash2, ArrowLeft, Calendar, User } from "lucide-react";
+import { ArrowLeft, Calendar, User } from "lucide-react";
 import { ProjectActions } from "./project-actions";
+import { FeedbackSection } from "./feedback-section";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -59,21 +60,21 @@ export default async function ProjectDetailPage({ params }: PageProps) {
       {/* Back link */}
       <Link
         href="/portfolio"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent"
       >
         <ArrowLeft className="h-4 w-4" />
         Volver a mi portfolio
       </Link>
 
-      <article className="rounded-xl border border-gray-200 bg-white shadow-sm">
+      <article className="rounded-lg border border-border bg-surface">
         {/* Header */}
-        <div className="border-b border-gray-100 p-6 sm:p-8">
+        <div className="border-b border-border p-6 sm:p-8">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+              <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
                 {project.title}
               </h1>
-              <span className="inline-block rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700">
+              <span className="inline-block rounded-md bg-accent-light/30 px-3 py-1 text-sm text-accent">
                 {project.category ? (CATEGORY_LABELS[project.category] ?? project.category) : "General"}
               </span>
             </div>
@@ -88,10 +89,10 @@ export default async function ProjectDetailPage({ params }: PageProps) {
         <div className="space-y-6 p-6 sm:p-8">
           {/* Description */}
           <div>
-            <h2 className="mb-2 text-lg font-semibold text-gray-900">
+            <h2 className="font-heading text-xl font-medium text-fg">
               Descripción
             </h2>
-            <p className="whitespace-pre-wrap text-gray-700 leading-relaxed">
+            <p className="mt-2 whitespace-pre-wrap text-fg leading-relaxed">
               {project.description}
             </p>
           </div>
@@ -99,14 +100,14 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           {/* Tags */}
           {project.tags.length > 0 && (
             <div>
-              <h2 className="mb-2 text-sm font-semibold text-gray-500 uppercase tracking-wider">
+              <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
                 Tags
               </h2>
-              <div className="flex flex-wrap gap-2">
+              <div className="mt-2 flex flex-wrap gap-2">
                 {project.tags.map((tag: string) => (
                   <span
                     key={tag}
-                    className="rounded-lg bg-gray-100 px-3 py-1 text-sm text-gray-700"
+                    className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
                   >
                     {tag}
                   </span>
@@ -116,7 +117,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
           )}
 
           {/* Meta info */}
-          <div className="flex flex-wrap gap-6 border-t border-gray-100 pt-4 text-sm text-gray-500">
+          <div className="flex flex-wrap gap-6 border-t border-border pt-4 text-sm text-muted">
             <div className="flex items-center gap-2">
               <Calendar className="h-4 w-4" />
               <span>{createdDate}</span>
@@ -135,7 +136,7 @@ export default async function ProjectDetailPage({ params }: PageProps) {
                 )}
                 <Link
                   href={`/students/${project.user.id}`}
-                  className="font-medium text-blue-600 hover:text-blue-700 hover:underline"
+                  className="font-medium text-accent hover:text-accent-hover"
                 >
                   {project.user.name}
                 </Link>
@@ -143,13 +144,17 @@ export default async function ProjectDetailPage({ params }: PageProps) {
             </div>
 
             {!project.visible && (
-              <span className="rounded bg-yellow-100 px-2 py-0.5 text-yellow-700 font-medium">
+              <span className="rounded-md bg-warning-bg px-2 py-0.5 text-warning font-medium">
                 Borrador / No visible
               </span>
             )}
           </div>
         </div>
       </article>
+
+      <div className="mt-12">
+        <FeedbackSection projectId={project.id} projectAuthorId={project.userId} />
+      </div>
     </main>
   );
 }

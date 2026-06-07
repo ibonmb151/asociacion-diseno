@@ -3,7 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth/auth";
-import { ArrowLeft, MessageCircle, Trash2, Send } from "lucide-react";
+import { ArrowLeft, MessageCircle, Trash2, Send, Pin } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
 /*  Tipos                                                              */
@@ -85,15 +85,15 @@ function formatDate(date: Date): string {
 function getCategoryStyles(category: string | null): string {
   switch (category) {
     case "Discussion":
-      return "bg-primary-100 text-primary-700";
+      return "bg-accent-light/30 text-accent";
     case "Feedback":
-      return "bg-secondary/10 text-secondary-dark";
+      return "bg-secondary-muted text-secondary";
     case "Resources":
-      return "bg-success/10 text-success";
+      return "bg-success-bg text-success";
     case "General":
-      return "bg-muted text-muted-foreground";
+      return "bg-primary-50 text-muted";
     default:
-      return "bg-muted text-muted-foreground";
+      return "bg-primary-50 text-muted";
   }
 }
 
@@ -145,19 +145,20 @@ export default async function PostPage({ params }: PostPageProps) {
       {/* ── Volver ── */}
       <Link
         href="/forum"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent"
       >
         <ArrowLeft className="h-4 w-4" />
         Volver al foro
       </Link>
 
       {/* ── Post ── */}
-      <article className="rounded-2xl border border-border bg-card p-6 sm:p-8">
+      <article className="rounded-lg border border-border bg-surface p-6 sm:p-8">
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-2">
           {post.pinned && (
-            <span className="flex items-center gap-1 rounded-md bg-secondary/10 px-2.5 py-0.5 text-xs font-medium text-secondary-dark">
-              📌 Pinned
+            <span className="flex items-center gap-1 rounded-md bg-secondary-muted px-2.5 py-0.5 text-xs font-medium text-secondary">
+              <Pin className="h-3.5 w-3.5" />
+              Pinned
             </span>
           )}
           {post.category && (
@@ -170,15 +171,15 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* Título */}
-        <h1 className="mt-4 text-2xl font-bold tracking-tight text-primary sm:text-3xl">
+        <h1 className="mt-4 font-heading text-3xl font-medium tracking-tight text-fg sm:text-3xl">
           {post.title}
         </h1>
 
         {/* Autor y fecha */}
-        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+        <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
           <span>
             Por{" "}
-            <span className="font-medium text-foreground">
+            <span className="font-medium text-fg">
               {post.user.name ?? "Usuario"}
             </span>
           </span>
@@ -191,7 +192,7 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* Contenido */}
-        <div className="prose prose-sm prose-primary mt-6 max-w-none whitespace-pre-wrap text-foreground">
+        <div className="prose prose-sm prose-primary mt-6 max-w-none whitespace-pre-wrap text-fg">
           {post.content}
         </div>
 
@@ -201,7 +202,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <form action={deletePost.bind(null, post.id)}>
               <button
                 type="submit"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-destructive transition-colors hover:text-red-600"
+                className="inline-flex items-center gap-1.5 rounded-md border border-danger/30 px-3 py-1.5 text-sm font-medium text-danger hover:bg-danger-bg"
               >
                 <Trash2 className="h-4 w-4" />
                 Eliminar post
@@ -213,16 +214,16 @@ export default async function PostPage({ params }: PostPageProps) {
 
       {/* ── Sección de comentarios ── */}
       <section className="mt-10">
-        <h2 className="text-xl font-bold text-primary">
+        <h2 className="font-heading text-xl font-medium text-fg">
           Comentarios ({post._count.comments})
         </h2>
 
         {/* Lista de comentarios */}
         <div className="mt-6 space-y-4">
           {post.comments.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border bg-muted/50 px-6 py-12 text-center">
-              <MessageCircle className="mx-auto h-8 w-8 text-muted-foreground/50" />
-              <p className="mt-3 text-sm text-muted-foreground">
+            <div className="rounded-lg border border-dashed border-border bg-primary-50 py-16 text-center">
+              <MessageCircle className="mx-auto h-8 w-8 text-muted" />
+              <p className="mt-3 text-sm text-muted">
                 Aún no hay comentarios. ¡Sé el primero en responder!
               </p>
             </div>
@@ -230,17 +231,17 @@ export default async function PostPage({ params }: PostPageProps) {
             post.comments.map((comment) => (
               <div
                 key={comment.id}
-                className="rounded-xl border border-border bg-card p-4 transition-all hover:border-primary-100"
+                className="rounded-lg border border-border bg-surface p-4"
               >
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-foreground">
+                  <span className="text-sm font-medium text-fg">
                     {comment.user.name ?? "Usuario"}
                   </span>
-                  <span className="text-xs text-muted-foreground">
+                  <span className="text-xs text-muted">
                     {formatDate(comment.createdAt)}
                   </span>
                 </div>
-                <p className="mt-2 whitespace-pre-wrap text-sm text-muted-foreground">
+                <p className="mt-2 whitespace-pre-wrap text-sm text-muted">
                   {comment.content}
                 </p>
               </div>
@@ -249,8 +250,8 @@ export default async function PostPage({ params }: PostPageProps) {
         </div>
 
         {/* ── Formulario para añadir comentario (Server Action) ── */}
-        <div className="mt-8 rounded-2xl border border-border bg-card p-6">
-          <h3 className="text-base font-semibold text-primary">
+        <div className="mt-8 rounded-lg border border-border bg-surface p-6">
+          <h3 className="text-base font-medium text-fg">
             Añadir comentario
           </h3>
 
@@ -260,20 +261,20 @@ export default async function PostPage({ params }: PostPageProps) {
               rows={4}
               required
               placeholder="Escribe tu comentario…"
-              className="w-full resize-y rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+              className="w-full resize-y rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
             />
 
             <div className="mt-3 flex items-center gap-3">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-light active:scale-[0.98]"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
               >
                 <Send className="h-4 w-4" />
                 Publicar comentario
               </button>
             </div>
 
-            <p className="mt-2 text-xs text-muted-foreground">
+            <p className="mt-2 text-xs text-muted">
               Tu comentario será visible para todos los usuarios.
             </p>
           </form>

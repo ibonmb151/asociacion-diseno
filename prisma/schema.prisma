@@ -35,6 +35,7 @@ model User {
   comments     ForumComment[]
   proposals    Proposal[]
   contactRequests ContactRequest[]
+  feedbacks       Feedback[]
 }
 
 model StudentProfile {
@@ -63,6 +64,8 @@ model Project {
   visible     Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  feedbacks Feedback[]
 }
 
 model ForumPost {
@@ -143,6 +146,19 @@ model ContactRequest {
   status      String   @default("pending") // pending, accepted, rejected
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  rating    Int      // 1-5
+  comment   String?  @db.Text
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, userId]) // one feedback per user per project
 }
 
 // NextAuth models

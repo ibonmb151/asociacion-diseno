@@ -60,6 +60,7 @@ export const ModelName = {
   Company: 'Company',
   CompanyNeed: 'CompanyNeed',
   ContactRequest: 'ContactRequest',
+  Feedback: 'Feedback',
   Account: 'Account',
   Session: 'Session',
   VerificationToken: 'VerificationToken'
@@ -214,6 +215,18 @@ export const ContactRequestScalarFieldEnum = {
 } as const
 
 export type ContactRequestScalarFieldEnum = (typeof ContactRequestScalarFieldEnum)[keyof typeof ContactRequestScalarFieldEnum]
+
+
+export const FeedbackScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  userId: 'userId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt'
+} as const
+
+export type FeedbackScalarFieldEnum = (typeof FeedbackScalarFieldEnum)[keyof typeof FeedbackScalarFieldEnum]
 
 
 export const AccountScalarFieldEnum = {

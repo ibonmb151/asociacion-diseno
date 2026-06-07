@@ -59,13 +59,13 @@ export default async function StudentsPage({
   const students = await getStudents(q);
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">
+        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
           Directorio de Estudiantes
         </h1>
-        <p className="mt-1 text-gray-500">
+        <p className="mt-1 text-muted">
           Explora perfiles de estudiantes de diseño.
         </p>
       </div>
@@ -74,19 +74,19 @@ export default async function StudentsPage({
       <StudentSearch initialQuery={q ?? ""} />
 
       {/* Results count */}
-      <p className="mb-6 text-sm text-gray-500">
+      <p className="mb-6 text-sm text-muted">
         {students.length === 0
           ? "No se encontraron estudiantes"
           : `${students.length} estudiante${students.length !== 1 ? "s" : ""} encontrado${students.length !== 1 ? "s" : ""}`}
       </p>
 
       {/* Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {students.map((student) => (
           <Link
             key={student.id}
             href={`/students/${student.id}`}
-            className="group rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-blue-300 hover:shadow-md"
+            className="group bento-card p-5"
           >
             {/* Avatar */}
             <div className="mb-4 flex justify-center">
@@ -94,10 +94,10 @@ export default async function StudentsPage({
                 <img
                   src={student.image}
                   alt={student.name ?? "Usuario"}
-                  className="h-20 w-20 rounded-full object-cover ring-2 ring-gray-100"
+                  className="h-20 w-20 rounded-full object-cover ring-2 ring-border"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-100 text-2xl font-bold text-blue-600">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-50 text-2xl font-bold text-fg">
                   {student.name
                     ?.split(" ")
                     .map((n) => n[0])
@@ -110,11 +110,11 @@ export default async function StudentsPage({
 
             {/* Name & Course */}
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+              <h3 className="font-heading text-lg font-medium text-fg">
                 {student.name ?? "Usuario"}
               </h3>
               {student.studentProfile?.course && (
-                <p className="mt-0.5 text-sm text-gray-500">
+                <p className="mt-0.5 text-sm text-muted">
                   {student.studentProfile.course}
                 </p>
               )}
@@ -122,7 +122,7 @@ export default async function StudentsPage({
 
             {/* Bio */}
             {student.bio && (
-              <p className="mt-2 line-clamp-2 text-center text-sm text-gray-600">
+              <p className="mt-2 line-clamp-2 text-center text-sm text-muted">
                 {student.bio}
               </p>
             )}
@@ -133,13 +133,13 @@ export default async function StudentsPage({
                 {student.studentProfile.skills.slice(0, 4).map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700"
+                    className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
                   >
                     {skill}
                   </span>
                 ))}
                 {student.studentProfile.skills.length > 4 && (
-                  <span className="rounded-md bg-gray-100 px-2 py-0.5 text-xs text-gray-500">
+                  <span className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted">
                     +{student.studentProfile.skills.length - 4}
                   </span>
                 )}

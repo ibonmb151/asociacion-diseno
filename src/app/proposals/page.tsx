@@ -53,37 +53,37 @@ function getStatusConfig(
     case "open":
       return {
         label: "Open",
-        bg: "bg-success/10",
+        bg: "bg-success-bg",
         text: "text-success",
         dot: "bg-success",
       };
     case "in_progress":
       return {
         label: "In Progress",
-        bg: "bg-blue-50",
-        text: "text-blue-600",
-        dot: "bg-blue-500",
+        bg: "bg-secondary-muted",
+        text: "text-secondary",
+        dot: "bg-secondary",
       };
     case "completed":
       return {
         label: "Completed",
-        bg: "bg-muted",
-        text: "text-muted-foreground",
-        dot: "bg-muted-foreground",
+        bg: "bg-primary-50",
+        text: "text-muted",
+        dot: "bg-muted",
       };
     case "closed":
       return {
         label: "Closed",
-        bg: "bg-destructive/10",
-        text: "text-destructive",
-        dot: "bg-destructive",
+        bg: "bg-primary-50",
+        text: "text-muted",
+        dot: "bg-muted",
       };
     default:
       return {
         label: status,
-        bg: "bg-muted",
-        text: "text-muted-foreground",
-        dot: "bg-muted-foreground",
+        bg: "bg-primary-50",
+        text: "text-muted",
+        dot: "bg-muted",
       };
   }
 }
@@ -91,15 +91,15 @@ function getStatusConfig(
 function getCategoryStyles(category: string | null): string {
   switch (category) {
     case "Collaboration":
-      return "bg-primary-100 text-primary-700";
+      return "bg-accent-light/30 text-accent";
     case "Project Idea":
-      return "bg-secondary/10 text-secondary-dark";
+      return "bg-secondary-muted text-secondary";
     case "Event":
-      return "bg-purple-50 text-purple-600";
+      return "bg-primary-50 text-muted";
     case "General":
-      return "bg-muted text-muted-foreground";
+      return "bg-primary-50 text-muted";
     default:
-      return "bg-muted text-muted-foreground";
+      return "bg-primary-50 text-muted";
   }
 }
 
@@ -154,17 +154,17 @@ export default async function ProposalsPage({
       {/* ── Cabecera ── */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-primary">
+          <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
             Propuestas
           </h1>
-          <p className="mt-1 text-muted-foreground">
+          <p className="mt-1 text-muted">
             Propón ideas, colaboraciones o eventos para la comunidad de diseño.
           </p>
         </div>
 
         <Link
           href="/proposals/new"
-          className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-light active:scale-[0.98]"
+          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
         >
           <Plus className="h-4 w-4" />
           Nueva Propuesta
@@ -179,13 +179,13 @@ export default async function ProposalsPage({
       >
         {/* Búsqueda */}
         <div className="relative min-w-0 flex-1 basis-48">
-          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
             type="text"
             name="q"
             defaultValue={q ?? ""}
             placeholder="Buscar propuestas…"
-            className="w-full rounded-xl border border-border bg-white py-2.5 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+            className="w-full rounded-md border border-border bg-surface px-3 py-2 pl-10 pr-4 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
           />
         </div>
 
@@ -193,7 +193,7 @@ export default async function ProposalsPage({
         <select
           name="category"
           defaultValue={category ?? ""}
-          className="rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
         >
           <option value="">Todas las categorías</option>
           {CATEGORIES.map((cat) => (
@@ -207,7 +207,7 @@ export default async function ProposalsPage({
         <select
           name="status"
           defaultValue={status ?? ""}
-          className="rounded-xl border border-border bg-white px-4 py-2.5 text-sm text-foreground focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
         >
           <option value="">Todos los estados</option>
           {STATUS_OPTIONS.map((opt) => (
@@ -219,7 +219,7 @@ export default async function ProposalsPage({
 
         <button
           type="submit"
-          className="inline-flex items-center gap-2 rounded-xl bg-primary-50 px-5 py-2.5 text-sm font-medium text-primary transition-all hover:bg-primary-100"
+          className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-fg hover:bg-primary-50"
         >
           Filtrar
         </button>
@@ -228,14 +228,14 @@ export default async function ProposalsPage({
       {/* ── Lista de propuestas ── */}
       <div className="mt-6 space-y-3">
         {proposals.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-border bg-muted/50 px-6 py-16 text-center">
-            <Lightbulb className="mx-auto h-10 w-10 text-muted-foreground/50" />
-            <p className="mt-4 text-lg font-medium text-muted-foreground">
+          <div className="rounded-lg border border-dashed border-border bg-primary-50 px-6 py-16 text-center">
+            <Lightbulb className="mx-auto h-10 w-10 text-muted" />
+            <p className="mt-4 text-lg font-medium text-muted">
               {q || category || status
                 ? "No hay propuestas que coincidan con los filtros"
                 : "Aún no hay propuestas"}
             </p>
-            <p className="mt-1 text-sm text-muted-foreground/70">
+            <p className="mt-1 text-sm text-muted">
               {q || category || status
                 ? "Prueba con otros filtros."
                 : "Sé el primero en proponer una idea."}
@@ -243,7 +243,7 @@ export default async function ProposalsPage({
             {!q && !category && !status && (
               <Link
                 href="/proposals/new"
-                className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-light"
+                className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover"
               >
                 Crear primera propuesta
                 <ChevronRight className="h-4 w-4" />
@@ -285,7 +285,7 @@ function ProposalCard({
   return (
     <Link
       href={`/proposals/${proposal.id}`}
-      className="group relative block rounded-2xl border border-border bg-card p-5 shadow-sm transition-all hover:border-primary-200 hover:shadow-md"
+      className="group relative block bento-card p-5"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -312,20 +312,20 @@ function ProposalCard({
           </div>
 
           {/* Título */}
-          <h2 className="mt-2 text-lg font-semibold text-primary group-hover:text-primary-light">
+          <h2 className="mt-2 font-heading text-lg font-medium text-fg">
             {proposal.title}
           </h2>
 
           {/* Descripción corta */}
-          <p className="mt-1.5 text-sm leading-6 text-muted-foreground line-clamp-2">
+          <p className="mt-1.5 text-sm leading-6 text-muted line-clamp-2">
             {shortDescription}
           </p>
 
           {/* Meta */}
-          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+          <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
             <span>
               Por{" "}
-              <span className="font-medium text-foreground">
+              <span className="font-medium text-fg">
                 {proposal.user.name ?? "Usuario"}
               </span>
             </span>
@@ -338,7 +338,7 @@ function ProposalCard({
               {proposal.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="inline-block rounded-md bg-primary-50 px-2 py-0.5 text-xs font-medium text-primary-600"
+                  className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
                 >
                   {tag}
                 </span>
@@ -347,7 +347,7 @@ function ProposalCard({
           )}
         </div>
 
-        <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+        <ChevronRight className="mt-1 h-5 w-5 shrink-0 text-muted transition-transform group-hover:translate-x-0.5" />
       </div>
     </Link>
   );

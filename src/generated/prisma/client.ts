@@ -87,6 +87,11 @@ export type CompanyNeed = Prisma.CompanyNeedModel
  */
 export type ContactRequest = Prisma.ContactRequestModel
 /**
+ * Model Feedback
+ * 
+ */
+export type Feedback = Prisma.FeedbackModel
+/**
  * Model Account
  * 
  */

@@ -109,17 +109,17 @@ export default async function StudentProfilePage({ params }: PageProps) {
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Sidebar — Profile Info */}
         <aside className="lg:col-span-1">
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="rounded-lg border border-border bg-surface p-6">
             {/* Avatar */}
             <div className="mb-4 flex justify-center">
               {student.image ? (
                 <img
                   src={student.image}
                   alt={student.name ?? "Usuario"}
-                  className="h-28 w-28 rounded-full object-cover ring-4 ring-gray-50"
+                  className="h-28 w-28 rounded-full object-cover ring-2 ring-border"
                 />
               ) : (
-                <div className="flex h-28 w-28 items-center justify-center rounded-full bg-blue-100 text-3xl font-bold text-blue-600">
+                <div className="flex h-28 w-28 items-center justify-center rounded-full bg-primary-50 text-3xl font-bold text-fg">
                   {student.name
                     ?.split(" ")
                     .map((n) => n[0])
@@ -132,19 +132,19 @@ export default async function StudentProfilePage({ params }: PageProps) {
 
             {/* Name */}
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
                 {student.name}
               </h1>
-{student.studentProfile?.course && (
-                  <span className="rounded-full bg-blue-50 px-3 py-1 text-sm text-blue-700">
-                    {student.studentProfile.course}
-                  </span>
-                )}
+              {student.studentProfile?.course && (
+                <span className="inline-block rounded-md bg-accent-light/30 px-3 py-1 text-sm text-accent">
+                  {student.studentProfile.course}
+                </span>
+              )}
             </div>
 
             {/* Bio */}
             {student.bio && (
-              <p className="mt-4 text-center text-sm text-gray-600 leading-relaxed">
+              <p className="mt-4 text-center text-sm text-fg leading-relaxed">
                 {student.bio}
               </p>
             )}
@@ -152,14 +152,14 @@ export default async function StudentProfilePage({ params }: PageProps) {
             {/* Skills */}
             {student.studentProfile?.skills && student.studentProfile.skills.length > 0 && (
               <div className="mt-5">
-                <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-gray-500">
+                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted">
                   Skills
                 </h3>
-                <div className="flex flex-wrap gap-1.5">
+                <div className="mt-2 flex flex-wrap gap-1.5">
                   {student.studentProfile.skills.map((skill: string) => (
                     <span
                       key={skill}
-                      className="rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700"
+                      className="rounded-md bg-primary-50 px-2.5 py-1 text-xs text-muted"
                     >
                       {skill}
                     </span>
@@ -175,11 +175,11 @@ export default async function StudentProfilePage({ params }: PageProps) {
                   href={student.studentProfile.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600"
+                  className="flex items-center gap-2 text-sm text-accent hover:text-accent-hover"
                 >
-                  <LinkIcon className="h-4 w-4" />
+                  <LinkIcon className="h-4 w-4 text-muted" />
                   LinkedIn
-                  <ExternalLink className="h-3 w-3 ml-auto" />
+                  <ExternalLink className="h-3 w-3 ml-auto text-muted" />
                 </a>
               )}
               {student.studentProfile?.website && (
@@ -187,18 +187,18 @@ export default async function StudentProfilePage({ params }: PageProps) {
                   href={student.studentProfile.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600"
+                  className="flex items-center gap-2 text-sm text-accent hover:text-accent-hover"
                 >
-                  <Globe className="h-4 w-4" />
+                  <Globe className="h-4 w-4 text-muted" />
                   Website
-                  <ExternalLink className="h-3 w-3 ml-auto" />
+                  <ExternalLink className="h-3 w-3 ml-auto text-muted" />
                 </a>
               )}
               <a
                 href={`mailto:${student.email}`}
-                className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600"
+                className="flex items-center gap-2 text-sm text-accent hover:text-accent-hover"
               >
-                <Mail className="h-4 w-4" />
+                <Mail className="h-4 w-4 text-muted" />
                 {student.email}
               </a>
             </div>
@@ -211,16 +211,16 @@ export default async function StudentProfilePage({ params }: PageProps) {
         {/* Main — Projects */}
         <div className="lg:col-span-2">
           <div className="flex items-center gap-2 mb-6">
-            <FolderOpen className="h-5 w-5 text-gray-500" />
-            <h2 className="text-xl font-bold text-gray-900">
+            <FolderOpen className="h-5 w-5 text-muted" />
+            <h2 className="font-heading text-xl font-medium text-fg">
               Proyectos
             </h2>
           </div>
 
           {student.projects.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 py-16">
-              <FolderOpen className="mb-3 h-10 w-10 text-gray-300" />
-              <p className="text-gray-500">
+            <div className="rounded-lg border border-dashed border-border bg-primary-50 py-16 text-center">
+              <FolderOpen className="mb-3 mx-auto h-10 w-10 text-muted" />
+              <p className="text-muted">
                 Este estudiante no ha publicado proyectos todavía.
               </p>
             </div>
@@ -236,23 +236,23 @@ export default async function StudentProfilePage({ params }: PageProps) {
                   <Link
                     key={project.id}
                     href={`/portfolio/${project.id}`}
-                    className="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:border-blue-300 hover:shadow-md"
+                    className="block rounded-lg border border-border bg-surface p-5"
                   >
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600">
+                        <h3 className="font-heading text-xl font-medium text-fg">
                           {project.title}
                         </h3>
-                        <span className="inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                        <span className="inline-block rounded-md bg-accent-light/30 px-2.5 py-0.5 text-xs text-accent">
                           {project.category ? (CATEGORY_LABELS[project.category] ?? project.category) : "General"}
                         </span>
                       </div>
-                      <span className="whitespace-nowrap text-xs text-gray-400">
+                      <span className="whitespace-nowrap text-xs text-muted">
                         {createdDate(project.createdAt)}
                       </span>
                     </div>
 
-                    <p className="mt-2 text-sm text-gray-600">
+                    <p className="mt-2 text-sm text-fg">
                       {shortDesc}
                     </p>
 
@@ -261,7 +261,7 @@ export default async function StudentProfilePage({ params }: PageProps) {
                         {project.tags.map((tag: string) => (
                           <span
                             key={tag}
-                            className="rounded-md bg-gray-100 px-2 py-0.5 text-xs text-gray-600"
+                            className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
                           >
                             {tag}
                           </span>

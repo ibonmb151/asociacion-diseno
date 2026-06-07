@@ -28,10 +28,10 @@ const NEED_STATUS_LABELS: Record<string, string> = {
 };
 
 const NEED_STATUS_STYLES: Record<string, string> = {
-  open: "bg-green-50 text-green-700",
-  interviewing: "bg-yellow-50 text-yellow-700",
-  filled: "bg-blue-50 text-blue-700",
-  closed: "bg-gray-100 text-gray-500",
+  open: "bg-success-bg text-success",
+  interviewing: "bg-warning-bg text-warning",
+  filled: "bg-accent-light/30 text-accent",
+  closed: "bg-primary-50 text-muted",
 };
 
 async function getCompany(id: string) {
@@ -78,7 +78,7 @@ export default async function CompanyProfilePage({ params }: PageProps) {
       {/* Back link */}
       <Link
         href="/companies"
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent"
       >
         <ArrowLeft className="h-4 w-4" />
         Volver a empresas
@@ -87,17 +87,17 @@ export default async function CompanyProfilePage({ params }: PageProps) {
       <div className="grid gap-8 lg:grid-cols-3">
         {/* ─── Sidebar — Company Info ─────────────────────────────── */}
         <aside className="lg:col-span-1">
-          <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
+          <div className="rounded-lg border border-border bg-surface p-6">
             {/* Logo */}
             <div className="mb-4 flex justify-center">
               {company.logo ? (
                 <img
                   src={company.logo}
                   alt={company.name}
-                  className="h-28 w-28 rounded-xl object-cover ring-4 ring-gray-50"
+                  className="h-28 w-28 rounded-xl object-cover ring-2 ring-border"
                 />
               ) : (
-                <div className="flex h-28 w-28 items-center justify-center rounded-xl bg-primary-50 text-3xl font-bold text-primary">
+                <div className="flex h-28 w-28 items-center justify-center rounded-xl bg-primary-50 text-3xl font-bold text-fg">
                   {company.name
                     ?.split(" ")
                     .map((n) => n[0])
@@ -110,11 +110,11 @@ export default async function CompanyProfilePage({ params }: PageProps) {
 
             {/* Name & Sector */}
             <div className="text-center">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
                 {company.name}
               </h1>
               {company.sector && (
-                <span className="mt-1 inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700">
+                <span className="mt-1 inline-block rounded-md bg-accent-light/30 px-2.5 py-0.5 text-xs font-medium text-accent">
                   {company.sector}
                 </span>
               )}
@@ -122,7 +122,7 @@ export default async function CompanyProfilePage({ params }: PageProps) {
 
             {/* Description */}
             {company.description && (
-              <p className="mt-4 text-center text-sm text-gray-600 leading-relaxed">
+              <p className="mt-4 text-center text-sm text-fg leading-relaxed">
                 {company.description}
               </p>
             )}
@@ -130,8 +130,8 @@ export default async function CompanyProfilePage({ params }: PageProps) {
             {/* Details */}
             <div className="mt-5 space-y-2">
               {company.location && (
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <MapPin className="h-4 w-4 shrink-0 text-gray-400" />
+                <div className="flex items-center gap-2 text-sm text-fg">
+                  <MapPin className="h-4 w-4 shrink-0 text-muted" />
                   <span>{company.location}</span>
                 </div>
               )}
@@ -140,21 +140,21 @@ export default async function CompanyProfilePage({ params }: PageProps) {
                   href={company.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-blue-600"
+                  className="flex items-center gap-2 text-sm text-accent hover:text-accent-hover"
                 >
-                  <Globe className="h-4 w-4 shrink-0 text-gray-400" />
+                  <Globe className="h-4 w-4 shrink-0 text-muted" />
                   <span className="truncate">
                     {new URL(company.website).hostname}
                   </span>
                   <ExternalLink className="h-3 w-3 ml-auto shrink-0" />
                 </a>
               )}
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Calendar className="h-4 w-4 shrink-0 text-gray-400" />
+              <div className="flex items-center gap-2 text-sm text-muted">
+                <Calendar className="h-4 w-4 shrink-0 text-muted" />
                 <span>Miembro desde {createdDate}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <Briefcase className="h-4 w-4 shrink-0 text-gray-400" />
+              <div className="flex items-center gap-2 text-sm text-muted">
+                <Briefcase className="h-4 w-4 shrink-0 text-muted" />
                 <span>
                   {company.needs.length} necesidad
                   {company.needs.length !== 1 ? "es" : ""} publicada
@@ -175,14 +175,14 @@ export default async function CompanyProfilePage({ params }: PageProps) {
               <div className="mt-5 space-y-3">
                 <Link
                   href={`/companies/${company.id}/needs/new`}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover"
                 >
                   <Plus className="h-4 w-4" />
                   Publicar Nueva Necesidad
                 </Link>
                 <button
                   disabled
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-500"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-muted"
                   title="Próximamente"
                 >
                   <Pencil className="h-4 w-4" />
@@ -196,22 +196,22 @@ export default async function CompanyProfilePage({ params }: PageProps) {
         {/* ─── Main — Needs List ──────────────────────────────────── */}
         <div className="lg:col-span-2">
           <div className="flex items-center gap-2 mb-6">
-            <Building2 className="h-5 w-5 text-gray-500" />
-            <h2 className="text-xl font-bold text-gray-900">
+            <Building2 className="h-5 w-5 text-muted" />
+            <h2 className="font-heading text-xl font-medium text-fg">
               Necesidades Activas
             </h2>
           </div>
 
           {company.needs.length === 0 ? (
-            <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 py-16">
-              <Building2 className="mb-3 h-10 w-10 text-gray-300" />
-              <p className="text-gray-500">
+            <div className="rounded-lg border border-dashed border-border bg-primary-50 py-16 text-center">
+              <Building2 className="mb-3 mx-auto h-10 w-10 text-muted" />
+              <p className="text-muted">
                 Esta empresa no ha publicado necesidades todavía.
               </p>
               {isCompanyOwner && (
                 <Link
                   href={`/companies/${company.id}/needs/new`}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                  className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
                 >
                   <Plus className="h-4 w-4" />
                   Publicar Primera Necesidad
@@ -229,23 +229,23 @@ export default async function CompanyProfilePage({ params }: PageProps) {
                 return (
                   <div
                     key={need.id}
-                    className="rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md"
+                    className="rounded-lg border border-border bg-surface p-5"
                   >
                     <div className="flex items-start justify-between">
                       <div className="space-y-1">
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="font-heading text-xl font-medium text-fg">
                           {need.title}
                         </h3>
                         <span
-                          className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                          className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-medium ${
                             NEED_STATUS_STYLES[need.status] ??
-                            "bg-gray-100 text-gray-600"
+                            "bg-primary-50 text-muted"
                           }`}
                         >
                           {NEED_STATUS_LABELS[need.status] ?? need.status}
                         </span>
                       </div>
-                      <span className="whitespace-nowrap text-xs text-gray-400">
+                      <span className="whitespace-nowrap text-xs text-muted">
                         {new Date(need.createdAt).toLocaleDateString("es-ES", {
                           year: "numeric",
                           month: "short",
@@ -253,7 +253,7 @@ export default async function CompanyProfilePage({ params }: PageProps) {
                       </span>
                     </div>
 
-                    <p className="mt-2 text-sm text-gray-600">{shortDesc}</p>
+                    <p className="mt-2 text-sm text-fg">{shortDesc}</p>
 
                     {/* Skills */}
                     {need.skills.length > 0 && (
@@ -261,7 +261,7 @@ export default async function CompanyProfilePage({ params }: PageProps) {
                         {need.skills.map((skill: string) => (
                           <span
                             key={skill}
-                            className="rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700"
+                            className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
                           >
                             {skill}
                           </span>
@@ -271,10 +271,10 @@ export default async function CompanyProfilePage({ params }: PageProps) {
 
                     {/* Company owner actions */}
                     {isCompanyOwner && (
-                      <div className="mt-4 flex gap-2 border-t border-gray-100 pt-3">
+                      <div className="mt-4 flex gap-2 border-t border-border pt-3">
                         <Link
                           href={`/companies/${company.id}/needs/${need.id}/edit`}
-                          className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-fg hover:bg-primary-50"
                         >
                           <Pencil className="h-3.5 w-3.5" />
                           Editar

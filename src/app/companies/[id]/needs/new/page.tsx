@@ -63,7 +63,6 @@ export default function NewNeedPage() {
       setSuccess(true);
       router.refresh();
 
-      // Redirect to company profile after a short delay
       setTimeout(() => {
         router.push(`/companies/${companyId}`);
       }, 1500);
@@ -76,18 +75,17 @@ export default function NewNeedPage() {
     }
   };
 
-  // ── Success state ──────────────────────────────────────────────
   if (success) {
     return (
-      <main className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="rounded-xl border border-green-200 bg-green-50 p-8 text-center shadow-sm">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-            <Plus className="h-8 w-8 text-green-600" />
+      <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="rounded-lg border border-border bg-surface p-8 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-accent-light/30">
+            <Plus className="h-8 w-8 text-accent" />
           </div>
-          <h2 className="text-2xl font-bold text-green-900">
+          <h2 className="font-heading text-2xl font-medium tracking-tight text-fg">
             Necesidad Publicada
           </h2>
-          <p className="mt-2 text-green-700">
+          <p className="mt-2 text-muted">
             Tu necesidad se ha publicado correctamente. Redirigiendo al perfil
             de la empresa...
           </p>
@@ -96,38 +94,35 @@ export default function NewNeedPage() {
     );
   }
 
-  // ── Form ───────────────────────────────────────────────────────
   return (
-    <main className="mx-auto max-w-2xl px-4 py-8 sm:px-6 lg:px-8">
-      {/* Back link */}
+    <main className="mx-auto max-w-2xl px-4 py-10 sm:px-6 lg:px-8">
       <Link
         href={`/companies/${companyId}`}
-        className="mb-6 inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-blue-600"
+        className="mb-6 inline-flex items-center gap-1.5 text-sm text-muted hover:text-accent"
       >
         <ArrowLeft className="h-4 w-4" />
         Volver al perfil de la empresa
       </Link>
 
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-        <h1 className="text-2xl font-bold text-gray-900">
+      <div className="rounded-lg border border-border bg-surface p-6 sm:p-8">
+        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
           Publicar Nueva Necesidad
         </h1>
-        <p className="mt-1 text-sm text-gray-500">
+        <p className="mt-1 text-muted">
           Describe qué tipo de talento o colaboración estás buscando.
         </p>
 
         {error && (
-          <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700">
+          <div className="mt-4 rounded-md bg-danger-bg px-4 py-3 text-sm text-danger">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-5">
-          {/* Title */}
           <div>
             <label
               htmlFor="title"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-fg"
             >
               Título <span className="text-red-500">*</span>
             </label>
@@ -138,15 +133,14 @@ export default function NewNeedPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Ej: Buscamos diseñador UX/UI para proyecto web"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1.5 w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
             />
           </div>
 
-          {/* Description */}
           <div>
             <label
               htmlFor="description"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-fg"
             >
               Descripción <span className="text-red-500">*</span>
             </label>
@@ -157,18 +151,17 @@ export default function NewNeedPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe el proyecto, las responsabilidades, la duración estimada y cualquier otro detalle relevante..."
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1.5 w-full resize-y rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
             />
           </div>
 
-          {/* Skills (comma-separated tags) */}
           <div>
             <label
               htmlFor="skills"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-fg"
             >
               Skills buscados{" "}
-              <span className="text-gray-400">(separados por coma)</span>
+              <span className="text-muted">(separados por coma)</span>
             </label>
             <input
               id="skills"
@@ -176,14 +169,14 @@ export default function NewNeedPage() {
               value={skillsInput}
               onChange={(e) => setSkillsInput(e.target.value)}
               placeholder="UX Research, Figma, Design System, Prototyping"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1.5 w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
             />
             {skillsArray.length > 0 && (
               <div className="mt-2 flex flex-wrap gap-1.5">
                 {skillsArray.map((skill) => (
                   <span
                     key={skill}
-                    className="inline-flex items-center gap-1 rounded-lg bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700"
+                    className="inline-flex items-center gap-1.5 rounded-md bg-primary-50 px-2.5 py-1 text-xs font-medium text-muted"
                   >
                     {skill}
                     <button
@@ -194,7 +187,7 @@ export default function NewNeedPage() {
                         );
                         setSkillsInput(newSkills.join(", "));
                       }}
-                      className="text-blue-400 hover:text-blue-600"
+                      className="text-muted hover:text-fg"
                     >
                       <X className="h-3 w-3" />
                     </button>
@@ -204,11 +197,10 @@ export default function NewNeedPage() {
             )}
           </div>
 
-          {/* Status */}
           <div>
             <label
               htmlFor="status"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-fg"
             >
               Estado
             </label>
@@ -216,7 +208,7 @@ export default function NewNeedPage() {
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value)}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1.5 w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
             >
               {STATUS_OPTIONS.map((opt) => (
                 <option key={opt.value} value={opt.value}>
@@ -224,23 +216,22 @@ export default function NewNeedPage() {
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-xs text-muted">
               Recomendamos &quot;Abierta&quot; para nuevas publicaciones.
             </p>
           </div>
 
-          {/* Actions */}
           <div className="flex items-center justify-end gap-3 pt-2">
             <Link
               href={`/companies/${companyId}`}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+              className="rounded-md border border-border px-5 py-2.5 text-sm font-medium text-muted hover:text-fg hover:bg-primary-50"
             >
               Cancelar
             </Link>
             <button
               type="submit"
               disabled={saving || !title.trim() || !description.trim()}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="inline-flex items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <Plus className="h-4 w-4" />
               {saving ? "Publicando..." : "Publicar Necesidad"}

@@ -10,6 +10,7 @@ import {
   FileText,
 } from "lucide-react";
 import Link from "next/link";
+import { RecentOpportunities } from "@/components/recent-opportunities";
 
 type Role = "STUDENT" | "COMPANY" | "ADMIN";
 
@@ -125,6 +126,7 @@ function StudentDashboard({ user }: { user: SessionUser }) {
 
       <QuickLinks links={quickLinks} />
       <StatsSection userId={user.id} role="STUDENT" />
+      <RecentOpportunities />
     </div>
   );
 }

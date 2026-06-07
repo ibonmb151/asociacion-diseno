@@ -37,14 +37,14 @@ export function ProjectActions({ projectId }: ProjectActionsProps) {
     <div className="flex gap-2">
       <Link
         href={`/portfolio/${projectId}/edit`}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-muted hover:bg-primary-50"
       >
         <Pencil className="h-4 w-4" />
         Editar
       </Link>
       <button
         onClick={handleDelete}
-        className="inline-flex items-center gap-1.5 rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50"
+        className="inline-flex items-center gap-1.5 rounded-md border border-danger/30 px-3 py-1.5 text-sm font-medium text-danger hover:bg-danger-bg"
       >
         <Trash2 className="h-4 w-4" />
         Eliminar
