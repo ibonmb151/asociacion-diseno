@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Pagination } from "@/components/pagination";
 import {
   Plus,
   Search,
@@ -7,6 +8,8 @@ import {
   ChevronRight,
   HelpCircle,
 } from "lucide-react";
+
+const ITEMS_PER_PAGE = 10;
 
 /* ------------------------------------------------------------------ */
 /*  Tipos                                                              */
@@ -17,6 +20,7 @@ interface ProposalsPageProps {
     category?: string;
     status?: string;
     q?: string;
+    page?: string;
   }>;
 }
 
@@ -111,7 +115,8 @@ function getCategoryStyles(category: string | null): string {
 export default async function ProposalsPage({
   searchParams,
 }: ProposalsPageProps) {
-  const { category, status, q } = await searchParams;
+  const { category, status, q, page } = await searchParams;
+  const currentPage = Math.max(1, Number(page) || 1);
 
   // Build Prisma where clause
   const where: Record<string, unknown> = {};
@@ -135,19 +140,25 @@ export default async function ProposalsPage({
     ];
   }
 
-  const proposals = await prisma.proposal.findMany({
-    where,
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
+  const [proposals, total] = await Promise.all([
+    prisma.proposal.findMany({
+      where,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
         },
       },
-    },
-    orderBy: { createdAt: "desc" },
-  });
+      orderBy: { createdAt: "desc" },
+      skip: (currentPage - 1) * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE,
+    }),
+    prisma.proposal.count({ where }),
+  ]);
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -256,6 +267,13 @@ export default async function ProposalsPage({
           ))
         )}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/proposals"
+        searchParams={{ q, category, status }}
+      />
     </div>
   );
 }

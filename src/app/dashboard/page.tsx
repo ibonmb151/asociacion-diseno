@@ -8,6 +8,7 @@ import {
   HeartHandshake,
   Search,
   FileText,
+  User,
 } from "lucide-react";
 import Link from "next/link";
 import { RecentOpportunities } from "@/components/recent-opportunities";
@@ -59,7 +60,7 @@ function QuickLinks({
   links: { label: string; href: string; icon: React.ElementType }[];
 }) {
   return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
       {links.map((link) => {
         const Icon = link.icon;
         return (
@@ -107,6 +108,7 @@ function StatsRow({ stats }: { stats: StatCard[] }) {
 
 function StudentDashboard({ user }: { user: SessionUser }) {
   const quickLinks = [
+    { label: "Mi Perfil", href: "/profile/edit", icon: User },
     { label: "Mis Proyectos", href: "/portfolio", icon: FolderOpen },
     { label: "Mi Portfolio", href: "/portfolio", icon: FileText },
     { label: "Foro", href: "/forum", icon: MessageSquare },
@@ -133,9 +135,10 @@ function StudentDashboard({ user }: { user: SessionUser }) {
 
 function CompanyDashboard({ user }: { user: SessionUser }) {
   const quickLinks = [
-    { label: "Publicar Necesidad", href: "/jobs/new", icon: FileText },
+    { label: "Mi Perfil", href: "/profile/edit", icon: User },
+    { label: "Publicar Necesidad", href: `/companies/${user.id}/needs/new`, icon: FileText },
     { label: "Buscar Talentos", href: "/students", icon: Search },
-    { label: "Mis Contactos", href: "/contacts", icon: HeartHandshake },
+    { label: "Mis Contactos", href: "/networking", icon: HeartHandshake },
     { label: "Mensajes", href: "/messages", icon: MessageSquare },
   ];
 

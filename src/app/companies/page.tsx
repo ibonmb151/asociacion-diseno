@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Building2, MapPin, Globe, Search, X } from "lucide-react";
+import { Pagination } from "@/components/pagination";
+
+const ITEMS_PER_PAGE = 12;
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                             */
@@ -23,7 +26,10 @@ interface CompanyCard {
 /*  Data fetching                                                     */
 /* ------------------------------------------------------------------ */
 
-async function getCompanies(search?: string): Promise<CompanyCard[]> {
+async function getCompanies(
+  search?: string,
+  page = 1,
+): Promise<[CompanyCard[], number]> {
   try {
     const where: Record<string, unknown> = {};
 
@@ -55,11 +61,15 @@ async function getCompanies(search?: string): Promise<CompanyCard[]> {
         },
       },
       orderBy: { name: "asc" },
+      take: ITEMS_PER_PAGE,
+      skip: (page - 1) * ITEMS_PER_PAGE,
     });
 
-    return companies;
+    const total = await prisma.company.count({ where });
+
+    return [companies, total];
   } catch {
-    return [];
+    return [[], 0];
   }
 }
 
@@ -70,10 +80,12 @@ async function getCompanies(search?: string): Promise<CompanyCard[]> {
 export default async function CompaniesPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
-  const { q } = await searchParams;
-  const companies = await getCompanies(q);
+  const { q, page } = await searchParams;
+  const currentPage = Math.max(1, Number(page) || 1);
+  const [companies, total] = await getCompanies(q, currentPage);
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -172,6 +184,13 @@ export default async function CompaniesPage({
           </Link>
         ))}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/companies"
+        searchParams={{ q }}
+      />
     </main>
   );
 }

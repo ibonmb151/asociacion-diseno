@@ -180,14 +180,13 @@ export default async function CompanyProfilePage({ params }: PageProps) {
                   <Plus className="h-4 w-4" />
                   Publicar Nueva Necesidad
                 </Link>
-                <button
-                  disabled
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-muted"
-                  title="Próximamente"
+                <Link
+                  href={`/profile/edit`}
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-border px-4 py-2.5 text-sm font-medium text-fg hover:bg-primary-50"
                 >
                   <Pencil className="h-4 w-4" />
                   Editar Perfil
-                </button>
+                </Link>
               </div>
             )}
           </div>

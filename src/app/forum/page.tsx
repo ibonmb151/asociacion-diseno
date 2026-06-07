@@ -1,13 +1,16 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { MessageCircle, Pin, Plus, Search, ChevronRight } from "lucide-react";
+import { Pagination } from "@/components/pagination";
+
+const ITEMS_PER_PAGE = 10;
 
 /* ------------------------------------------------------------------ */
 /*  Tipos                                                              */
 /* ------------------------------------------------------------------ */
 
 interface ForumPageProps {
-  searchParams: Promise<{ q?: string; category?: string }>;
+  searchParams: Promise<{ q?: string; category?: string; page?: string }>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -47,7 +50,8 @@ function getCategoryStyles(category: string | null): string {
 /* ------------------------------------------------------------------ */
 
 export default async function ForumPage({ searchParams }: ForumPageProps) {
-  const { q, category } = await searchParams;
+  const { q, category, page } = await searchParams;
+  const currentPage = Math.max(1, Number(page) || 1);
 
   // Build Prisma where clause
   const where: Record<string, unknown> = {};
@@ -60,27 +64,34 @@ export default async function ForumPage({ searchParams }: ForumPageProps) {
     where.title = { contains: q.trim(), mode: "insensitive" };
   }
 
-  const posts = await prisma.forumPost.findMany({
-    where,
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
+  const [posts, total] = await Promise.all([
+    prisma.forumPost.findMany({
+      where,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+        _count: {
+          select: {
+            comments: true,
+          },
         },
       },
-      _count: {
-        select: {
-          comments: true,
-        },
-      },
-    },
-    orderBy: [
-      { pinned: "desc" },
-      { createdAt: "desc" },
-    ],
-  });
+      orderBy: [
+        { pinned: "desc" },
+        { createdAt: "desc" },
+      ],
+      skip: (currentPage - 1) * ITEMS_PER_PAGE,
+      take: ITEMS_PER_PAGE,
+    }),
+    prisma.forumPost.count({ where }),
+  ]);
+
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -174,6 +185,13 @@ export default async function ForumPage({ searchParams }: ForumPageProps) {
           ))
         )}
       </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        basePath="/forum"
+        searchParams={{ q, category }}
+      />
     </div>
   );
 }
