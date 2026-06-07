@@ -1,20 +1,28 @@
 "use client"
 
-import { useState, useEffect, Suspense } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useState, useEffect, Suspense, useRef } from "react"
+import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { Mail, Lock, Loader2 } from "lucide-react"
 
 function LoginForm() {
-  const router = useRouter()
   const searchParams = useSearchParams()
   const errorParam = searchParams.get("error")
   const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard"
 
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
+  const [csrfToken, setCsrfToken] = useState("")
+  const [csrfLoaded, setCsrfLoaded] = useState(false)
+
+  useEffect(() => {
+    fetch("/api/auth/csrf")
+      .then((res) => res.json())
+      .then((data) => {
+        setCsrfToken(data.csrfToken ?? "")
+        setCsrfLoaded(true)
+      })
+      .catch(() => setCsrfLoaded(true))
+  }, [])
+
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
@@ -28,33 +36,6 @@ function LoginForm() {
       setError("Ocurrió un error al iniciar sesión. Intenta de nuevo.")
     }
   }, [errorParam])
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setError(null)
-    setIsLoading(true)
-
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-        callbackUrl,
-      })
-
-      if (result?.error) {
-        setError("Credenciales inválidas. Verifica tu email y contraseña.")
-        setIsLoading(false)
-        return
-      }
-
-      router.push(callbackUrl)
-      router.refresh()
-    } catch {
-      setError("Error de conexión. Intenta de nuevo.")
-      setIsLoading(false)
-    }
-  }
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-bg px-4 py-12 sm:px-6 lg:px-8">
@@ -81,7 +62,21 @@ function LoginForm() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          {!csrfLoaded && (
+            <div className="mb-6 flex items-center justify-center gap-2 text-sm text-muted">
+              <Loader2 className="h-4 w-4 animate-spin" />
+              Cargando...
+            </div>
+          )}
+
+          <form
+            action="/api/auth/login"
+            method="POST"
+            className="space-y-5"
+          >
+            <input type="hidden" name="csrfToken" value={csrfToken} />
+            <input type="hidden" name="callbackUrl" value={callbackUrl} />
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-fg">
                 Email
@@ -96,8 +91,6 @@ function LoginForm() {
                   type="email"
                   autoComplete="email"
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@email.com"
                   className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
@@ -118,8 +111,6 @@ function LoginForm() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
@@ -128,11 +119,10 @@ function LoginForm() {
 
             <button
               type="submit"
-              disabled={isLoading}
+              disabled={!csrfLoaded}
               className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-70"
             >
-              {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
-              {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+              {!csrfLoaded ? "Cargando..." : "Iniciar Sesión"}
             </button>
           </form>
 
