@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, Inter } from "next/font/google";
+import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
 import { Navbar } from "@/components/Navbar";
 
-const spaceGrotesk = Space_Grotesk({
+const playfair = Playfair_Display({
   variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
@@ -50,9 +50,9 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-white font-body">
+      <body className="min-h-full flex flex-col bg-bg font-body text-fg selection:bg-accent-light">
         <SessionProvider>
           <Navbar />
           <main className="flex-1">{children}</main>

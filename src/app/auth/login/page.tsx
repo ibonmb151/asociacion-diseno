@@ -18,15 +18,14 @@ function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Map next-auth error codes to user-friendly messages
   const authError =
     errorParam === "CredentialsSignin"
       ? "Credenciales inválidas. Verifica tu email y contraseña."
       : errorParam === "OAuthAccountNotLinked"
         ? "Este email ya está registrado con otro método de inicio de sesión."
-        : errorParam
-          ? "Ocurrió un error al iniciar sesión. Intenta de nuevo."
-          : null;
+      : errorParam
+        ? "Ocurrió un error al iniciar sesión. Intenta de nuevo."
+        : null;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -66,30 +65,29 @@ function LoginForm() {
   }
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-gradient-to-br from-primary-50 via-white to-primary-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-bg px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-2xl font-bold text-primary"
+            className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
-            <Sparkles className="h-6 w-6 text-secondary" />
-            <span>Design Hub</span>
+            <Sparkles className="h-5 w-5 text-accent" />
+            <span>Asociación de Diseño</span>
           </Link>
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-primary">
+          <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">
             Iniciar Sesión
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted">
             Accede a tu cuenta para continuar
           </p>
         </div>
 
         {/* Card */}
-        <div className="mt-8 rounded-2xl border border-primary-100 bg-white p-8 shadow-sm">
-          {/* Auth errors */}
+        <div className="mt-8 rounded-lg border border-border bg-surface p-8">
           {(authError || error) && (
-            <div className="mb-6 rounded-lg bg-red-50 px-4 py-3 text-sm text-destructive">
+            <div className="mb-6 rounded-md bg-danger-bg px-4 py-3 text-sm text-danger">
               {authError || error}
             </div>
           )}
@@ -99,7 +97,7 @@ function LoginForm() {
             type="button"
             onClick={handleGoogleLogin}
             disabled={isLoading}
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-primary-200 bg-white px-4 py-3 text-sm font-medium text-primary shadow-sm transition-all hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex w-full items-center justify-center gap-3 rounded-md border border-border bg-surface px-4 py-3 text-sm font-medium text-fg transition-all hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path
@@ -125,10 +123,10 @@ function LoginForm() {
           {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-primary-100" />
+              <div className="w-full border-t border-border" />
             </div>
             <div className="relative flex justify-center text-xs">
-              <span className="bg-white px-4 text-muted-foreground">
+              <span className="bg-surface px-4 text-muted">
                 O continúa con email
               </span>
             </div>
@@ -139,13 +137,13 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm font-medium text-primary"
+                className="block text-sm font-medium text-fg"
               >
                 Email
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Mail className="h-5 w-5 text-muted-foreground" />
+                  <Mail className="h-5 w-5 text-muted" />
                 </div>
                 <input
                   id="email"
@@ -156,7 +154,7 @@ function LoginForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@email.com"
-                  className="block w-full rounded-xl border border-primary-200 bg-white py-3 pl-10 pr-3 text-sm text-primary placeholder:text-muted-foreground focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                  className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
               </div>
             </div>
@@ -164,13 +162,13 @@ function LoginForm() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-primary"
+                className="block text-sm font-medium text-fg"
               >
                 Contraseña
               </label>
               <div className="relative mt-1">
                 <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                  <Lock className="h-5 w-5 text-muted-foreground" />
+                  <Lock className="h-5 w-5 text-muted" />
                 </div>
                 <input
                   id="password"
@@ -181,12 +179,12 @@ function LoginForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="block w-full rounded-xl border border-primary-200 bg-white py-3 pl-10 pr-10 text-sm text-primary placeholder:text-muted-foreground focus:border-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-100"
+                  className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-10 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground hover:text-primary"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted hover:text-fg"
                   tabIndex={-1}
                 >
                   {showPassword ? (
@@ -201,7 +199,7 @@ function LoginForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:bg-primary-light disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-surface transition-all hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? (
                 <>
@@ -216,11 +214,11 @@ function LoginForm() {
         </div>
 
         {/* Register link */}
-        <p className="mt-6 text-center text-sm text-muted-foreground">
+        <p className="mt-6 text-center text-sm text-muted">
           ¿No tienes cuenta?{" "}
           <Link
             href="/auth/register"
-            className="font-medium text-primary hover:text-primary-light"
+            className="font-medium text-accent hover:text-accent-hover"
           >
             Regístrate aquí
           </Link>
@@ -232,11 +230,13 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-bg">
+          <Loader2 className="h-8 w-8 animate-spin text-muted" />
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
   );
