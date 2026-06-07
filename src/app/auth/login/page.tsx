@@ -1,3 +1,4 @@
+import { cookies, headers } from "next/headers"
 import Link from "next/link"
 import { Mail, Lock } from "lucide-react"
 
@@ -5,9 +6,46 @@ interface Props {
   searchParams: Promise<{ error?: string; callbackUrl?: string }>
 }
 
+async function getCsrfToken(baseUrl: string) {
+  try {
+    const res = await fetch(`${baseUrl}/api/auth/csrf`, {
+      cache: "no-store",
+    })
+    const data = await res.json()
+
+    // Forward the CSRF cookie from the internal fetch to the browser response
+    const setCookieHeader = res.headers.get("set-cookie")
+    if (setCookieHeader) {
+      const cookieStore = await cookies()
+      const csrfMatch = setCookieHeader.match(/next-auth\.csrf-token=([^;]+)/)
+      if (csrfMatch) {
+        const rawValue = csrfMatch[1]
+        cookieStore.set("next-auth.csrf-token", decodeURIComponent(rawValue), {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: baseUrl.startsWith("https"),
+        })
+      }
+    }
+
+    return data.csrfToken ?? ""
+  } catch {
+    return ""
+  }
+}
+
 export default async function LoginPage({ searchParams }: Props) {
   const { error: errorParam, callbackUrl } = await searchParams
   const cbUrl = callbackUrl ?? "/dashboard"
+
+  // Build base URL from request headers
+  const h = await headers()
+  const host = h.get("host") ?? "localhost:3000"
+  const proto = h.get("x-forwarded-proto") ?? "http"
+  const baseUrl = `${proto}://${host}`
+
+  const csrfToken = await getCsrfToken(baseUrl)
 
   const authError =
     errorParam === "CredentialsSignin"
@@ -21,7 +59,6 @@ export default async function LoginPage({ searchParams }: Props) {
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-bg px-4 py-12 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-        {/* Header */}
         <div className="text-center">
           <Link
             href="/"
@@ -37,7 +74,6 @@ export default async function LoginPage({ searchParams }: Props) {
           </p>
         </div>
 
-        {/* Card */}
         <div className="mt-8 rounded-lg border border-border bg-surface p-8">
           {authError && (
             <div className="mb-6 rounded-md bg-danger-bg px-4 py-3 text-sm text-danger">
@@ -45,12 +81,12 @@ export default async function LoginPage({ searchParams }: Props) {
             </div>
           )}
 
-          {/* Native form POST — no JS, full page navigation */}
           <form
-            action="/api/auth/login"
+            action="/api/auth/callback/credentials"
             method="POST"
             className="space-y-5"
           >
+            <input type="hidden" name="csrfToken" value={csrfToken} />
             <input type="hidden" name="callbackUrl" value={cbUrl} />
 
             <div>
@@ -101,7 +137,6 @@ export default async function LoginPage({ searchParams }: Props) {
             </button>
           </form>
 
-          {/* Divider */}
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border" />
@@ -113,7 +148,6 @@ export default async function LoginPage({ searchParams }: Props) {
             </div>
           </div>
 
-          {/* Google Login */}
           <form action="/api/auth/signin/google" method="POST">
             <input type="hidden" name="callbackUrl" value={cbUrl} />
             <button
@@ -131,7 +165,6 @@ export default async function LoginPage({ searchParams }: Props) {
           </form>
         </div>
 
-        {/* Register link */}
         <p className="mt-6 text-center text-sm text-muted">
           ¿No tienes cuenta?{" "}
           <Link
