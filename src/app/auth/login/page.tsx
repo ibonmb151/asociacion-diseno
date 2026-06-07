@@ -1,35 +1,13 @@
-import { headers } from "next/headers"
 import Link from "next/link"
 import { Mail, Lock } from "lucide-react"
-import { redirect } from "next/navigation"
 
 interface Props {
   searchParams: Promise<{ error?: string; callbackUrl?: string }>
 }
 
-async function getCsrfToken(baseUrl: string): Promise<string> {
-  try {
-    const res = await fetch(`${baseUrl}/api/auth/csrf`, {
-      cache: "no-store",
-    })
-    const data = await res.json()
-    return data.csrfToken ?? ""
-  } catch {
-    return ""
-  }
-}
-
 export default async function LoginPage({ searchParams }: Props) {
   const { error: errorParam, callbackUrl } = await searchParams
   const cbUrl = callbackUrl ?? "/dashboard"
-
-  // Build base URL from request headers
-  const h = await headers()
-  const host = h.get("host") ?? "localhost:3000"
-  const proto = h.get("x-forwarded-proto") ?? "http"
-  const baseUrl = `${proto}://${host}`
-
-  const csrfToken = await getCsrfToken(baseUrl)
 
   const authError =
     errorParam === "CredentialsSignin"
@@ -69,11 +47,10 @@ export default async function LoginPage({ searchParams }: Props) {
 
           {/* Native form POST — no JS, full page navigation */}
           <form
-            action="/api/auth/callback/credentials"
+            action="/api/auth/login"
             method="POST"
             className="space-y-5"
           >
-            <input type="hidden" name="csrfToken" value={csrfToken} />
             <input type="hidden" name="callbackUrl" value={cbUrl} />
 
             <div>
@@ -137,7 +114,7 @@ export default async function LoginPage({ searchParams }: Props) {
           </div>
 
           {/* Google Login */}
-          <form action={`${baseUrl}/api/auth/signin/google`} method="POST">
+          <form action="/api/auth/signin/google" method="POST">
             <input type="hidden" name="callbackUrl" value={cbUrl} />
             <button
               type="submit"
