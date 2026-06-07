@@ -17,10 +17,10 @@ import {
   Building2,
   Users,
   ChevronDown,
-  Sparkles,
+  Home,
 } from "lucide-react";
 
-const publicLinks = [{ href: "/", label: "Inicio", icon: Sparkles }];
+const publicLinks = [{ href: "/", label: "Inicio", icon: Home }];
 
 const protectedLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -92,7 +92,7 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-fg"
         >
-          <Sparkles className="h-5 w-5 text-accent" />
+          <Home className="h-5 w-5 text-accent" />
           <span>Asociación de Diseño</span>
         </Link>
 
@@ -166,7 +166,7 @@ export function Navbar() {
                   </Link>
 
                   <Link
-                    href="/profile"
+                    href="/profile/edit"
                     onClick={() => setDropdownOpen(false)}
                     className="flex items-center gap-2 rounded-md px-3 py-2 text-sm text-muted transition-colors hover:bg-accent-light/15 hover:text-fg"
                   >

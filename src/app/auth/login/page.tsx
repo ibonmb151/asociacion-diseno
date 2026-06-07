@@ -4,7 +4,7 @@ import { Suspense, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Sparkles, Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react";
 
 function LoginForm() {
   const router = useRouter();
@@ -50,6 +50,7 @@ function LoginForm() {
       }
 
       if (result?.ok) {
+        setIsLoading(false);
         router.push(callbackUrl);
         router.refresh();
       }
@@ -73,7 +74,6 @@ function LoginForm() {
             href="/"
             className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
-            <Sparkles className="h-5 w-5 text-accent" />
             <span>Asociación de Diseño</span>
           </Link>
           <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">

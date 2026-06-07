@@ -5,7 +5,6 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
-  Sparkles,
   Loader2,
   GraduationCap,
   Building2,
@@ -14,8 +13,9 @@ import {
   User,
   Eye,
   EyeOff,
-  Briefcase,
+  Home,
   FileText,
+  Briefcase,
 } from "lucide-react";
 
 type UserType = "student" | "company";
@@ -113,7 +113,7 @@ function RegisterForm() {
             href="/"
             className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
-            <Sparkles className="h-5 w-5 text-accent" />
+            <Home className="h-5 w-5 text-accent" />
             <span>Asociación de Diseño</span>
           </Link>
           <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">

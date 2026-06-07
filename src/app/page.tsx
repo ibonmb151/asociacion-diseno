@@ -9,7 +9,7 @@ import {
   Building2,
   FileText,
   GraduationCap,
-  Sparkles,
+  Home,
   ChevronRight,
   Globe,
 } from "lucide-react";
@@ -400,7 +400,7 @@ function FooterSection() {
               href="/"
               className="flex items-center gap-2 font-heading text-lg font-semibold text-fg"
             >
-              <Sparkles className="h-5 w-5 text-accent" />
+              <Home className="h-5 w-5 text-accent" />
               <span>Asociación de Diseño</span>
             </Link>
             <p className="mt-3 text-sm leading-relaxed text-muted">

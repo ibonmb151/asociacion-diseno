@@ -133,10 +133,14 @@ function StudentDashboard({ user }: { user: SessionUser }) {
   );
 }
 
-function CompanyDashboard({ user }: { user: SessionUser }) {
+async function CompanyDashboard({ user }: { user: SessionUser }) {
+  const company = await prisma.company.findUnique({
+    where: { email: user.email },
+    select: { id: true },
+  })
   const quickLinks = [
     { label: "Mi Perfil", href: "/profile/edit", icon: User },
-    { label: "Publicar Necesidad", href: `/companies/${user.id}/needs/new`, icon: FileText },
+    { label: "Publicar Necesidad", href: company ? `/companies/${company.id}/needs/new` : "#", icon: FileText },
     { label: "Buscar Talentos", href: "/students", icon: Search },
     { label: "Mis Contactos", href: "/networking", icon: HeartHandshake },
     { label: "Mensajes", href: "/messages", icon: MessageSquare },
