@@ -48,7 +48,7 @@ export function ContactButton({ studentId }: ContactButtonProps) {
     <button
       onClick={handleContact}
       disabled={sending}
-      className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-50"
+      className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
     >
       <Send className="h-4 w-4" />
       {sending ? "Enviando..." : "Contactar"}

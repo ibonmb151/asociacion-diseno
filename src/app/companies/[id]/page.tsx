@@ -175,7 +175,7 @@ export default async function CompanyProfilePage({ params }: PageProps) {
               <div className="mt-5 space-y-3">
                 <Link
                   href={`/companies/${company.id}/needs/new`}
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent-hover"
                 >
                   <Plus className="h-4 w-4" />
                   Publicar Nueva Necesidad
@@ -210,7 +210,7 @@ export default async function CompanyProfilePage({ params }: PageProps) {
               {isCompanyOwner && (
                 <Link
                   href={`/companies/${company.id}/needs/new`}
-                  className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
+                  className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
                 >
                   <Plus className="h-4 w-4" />
                   Publicar Primera Necesidad

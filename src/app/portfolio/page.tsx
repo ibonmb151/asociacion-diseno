@@ -224,7 +224,7 @@ function ProjectFormModal({
             </button>
             <button
               type="submit" disabled={saving}
-              className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-50"
+              className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
             >
               {saving ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
             </button>
@@ -309,7 +309,7 @@ export default function PortfolioPage() {
         </div>
         <button
           onClick={() => { setEditingProject(null); setModalOpen(true); }}
-          className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
+          className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           <Plus className="h-4 w-4" />
           Nuevo Proyecto
@@ -327,7 +327,7 @@ export default function PortfolioPage() {
           <p className="mt-1 text-sm text-muted">Crea tu primer proyecto para mostrar tu trabajo.</p>
           <button
             onClick={() => setModalOpen(true)}
-            className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
+            className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
           >
             <Plus className="h-4 w-4" />
             Crear Proyecto

@@ -70,7 +70,7 @@ export function ContactCompanyButton({
       {/* Trigger button */}
       <button
         onClick={handleOpen}
-        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-surface hover:bg-accent-hover"
+        className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white hover:bg-accent-hover"
       >
         <Send className="h-4 w-4" />
         Contactar
@@ -144,7 +144,7 @@ export function ContactCompanyButton({
                   <button
                     type="submit"
                     disabled={sending || !message.trim()}
-                    className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-50"
+                    className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
                   >
                     <Send className="h-4 w-4" />
                     {sending ? "Enviando..." : "Enviar Solicitud"}

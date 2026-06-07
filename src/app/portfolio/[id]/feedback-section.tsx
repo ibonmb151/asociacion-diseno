@@ -142,7 +142,7 @@ export function FeedbackSection({ projectId, projectAuthorId }: Props) {
               type="button"
               onClick={handleSubmit}
               disabled={!rating || submitting}
-              className="rounded-md bg-accent px-5 py-2 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-md bg-accent px-5 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? "Enviando..." : "Enviar valoración"}
             </button>

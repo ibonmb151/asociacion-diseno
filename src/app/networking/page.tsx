@@ -268,7 +268,7 @@ export default async function NetworkingPage({
                     {isStudent && (
                       <Link
                         href={`/companies/${need.company.id}`}
-                        className="inline-flex items-center gap-1 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-surface hover:bg-accent-hover"
+                        className="inline-flex items-center gap-1 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-white hover:bg-accent-hover"
                       >
                         Contactar
                         <ArrowRight className="h-3 w-3" />
@@ -382,7 +382,7 @@ export default async function NetworkingPage({
                     {isCompany && (
                       <Link
                         href={`/students/${proposal.user.id}`}
-                        className="inline-flex items-center gap-1 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-surface hover:bg-accent-hover"
+                        className="inline-flex items-center gap-1 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-white hover:bg-accent-hover"
                       >
                         Conectar
                         <ArrowRight className="h-3 w-3" />

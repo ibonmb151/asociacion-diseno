@@ -267,7 +267,7 @@ export default async function PostPage({ params }: PostPageProps) {
             <div className="mt-3 flex items-center gap-3">
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
+                className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
               >
                 <Send className="h-4 w-4" />
                 Publicar comentario

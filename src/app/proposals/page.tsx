@@ -175,7 +175,7 @@ export default async function ProposalsPage({
 
         <Link
           href="/proposals/new"
-          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
+          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           <Plus className="h-4 w-4" />
           Nueva Propuesta

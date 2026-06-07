@@ -50,7 +50,7 @@ export function Pagination({ currentPage, totalPages, basePath, searchParams = {
             href={buildUrl(p)}
             className={`inline-flex h-9 w-9 items-center justify-center rounded-md text-sm font-medium ${
               p === currentPage
-                ? "bg-accent text-surface"
+                ? "bg-accent text-white"
                 : "text-fg hover:bg-primary-50"
             }`}
           >

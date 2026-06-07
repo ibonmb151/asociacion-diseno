@@ -357,7 +357,7 @@ function CTASection() {
           {...fadeUp(0)}
           className="mx-auto max-w-2xl text-center"
         >
-          <h2 className="font-heading text-3xl font-medium leading-tight text-surface sm:text-4xl">
+          <h2 className="font-heading text-3xl font-medium leading-tight text-white sm:text-4xl">
             ¿Listo para formar parte?
           </h2>
           <p className="mt-4 text-base leading-relaxed text-accent-light">
@@ -375,7 +375,7 @@ function CTASection() {
             </Link>
             <Link
               href="/auth/register?type=company"
-              className="inline-flex items-center gap-2 rounded-lg border border-surface/30 bg-transparent px-6 py-3 text-sm font-medium text-surface transition-all hover:bg-white/10 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-lg border border-surface/30 bg-transparent px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10 active:scale-[0.98]"
             >
               <Building2 className="h-4 w-4" />
               Registra tu Empresa

@@ -109,7 +109,7 @@ export default async function ForumPage({ searchParams }: ForumPageProps) {
 
         <Link
           href="/forum/new"
-          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface hover:bg-accent-hover"
+          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           <Plus className="h-4 w-4" />
           Nuevo Post
@@ -217,7 +217,7 @@ function PostCard({
       className="group relative block bento-card p-5"
     >
       {post.pinned && (
-        <div className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-secondary text-surface">
+        <div className="absolute -top-2 -right-2 flex h-6 w-6 items-center justify-center rounded-full bg-secondary text-white">
           <Pin className="h-3 w-3" />
         </div>
       )}

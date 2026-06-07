@@ -131,7 +131,7 @@ export function Navbar() {
                     className="h-6 w-6 rounded-full object-cover"
                   />
                 ) : (
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-xs font-bold text-surface">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent text-xs font-bold text-white">
                     {getUserInitials()}
                   </span>
                 )}
@@ -196,7 +196,7 @@ export function Navbar() {
               </Link>
               <Link
                 href="/auth/register"
-                className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
+                className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
               >
                 Registrarse
               </Link>
@@ -254,7 +254,7 @@ export function Navbar() {
                       className="h-10 w-10 rounded-full object-cover"
                     />
                   ) : (
-                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-sm font-bold text-surface">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-accent text-sm font-bold text-white">
                       {getUserInitials()}
                     </span>
                   )}
@@ -285,7 +285,7 @@ export function Navbar() {
                 </Link>
                 <Link
                   href="/auth/register"
-                  className="flex items-center justify-center rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-surface transition-colors hover:bg-accent-hover"
+                  className="flex items-center justify-center rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-accent-hover"
                 >
                   Registrarse
                 </Link>
