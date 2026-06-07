@@ -1,8 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { Mail, Lock, Eye, EyeOff } from "lucide-react"
-import { signIn } from "next-auth/react"
+import { useState, useEffect } from "react"
+import { Mail, Lock, Eye, EyeOff, Loader2 } from "lucide-react"
 
 interface Props {
   callbackUrl: string
@@ -14,35 +13,38 @@ export function LoginForm({ callbackUrl }: Props) {
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [csrfToken, setCsrfToken] = useState("")
 
-  async function handleSubmit(e: React.FormEvent) {
+  useEffect(() => {
+    fetch("/api/auth/csrf")
+      .then(r => r.json())
+      .then(data => setCsrfToken(data.csrfToken ?? ""))
+      .catch(() => {})
+  }, [])
+
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setIsLoading(true)
     setError(null)
 
-    try {
-      const result = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-        callbackUrl,
-      })
+    // Native form POST — always works, follows redirects, sets cookies
+    const form = document.createElement("form")
+    form.method = "POST"
+    form.action = `/api/auth/callback/credentials`
+    form.style.display = "none"
 
-      if (result?.error) {
-        setError("Email o contraseña incorrectos.")
-        setIsLoading(false)
-        return
-      }
-
-      if (result?.ok || result?.url) {
-        window.location.href = result.url ?? callbackUrl
-      } else {
-        window.location.href = callbackUrl
-      }
-    } catch {
-      setError("Error de conexión. Intenta de nuevo.")
-      setIsLoading(false)
+    const fields = { csrfToken, email, password, callbackUrl }
+    for (const [name, value] of Object.entries(fields)) {
+      const input = document.createElement("input")
+      input.type = "hidden"
+      input.name = name
+      input.value = value
+      form.appendChild(input)
     }
+
+    document.body.appendChild(form)
+    form.submit()
+    // Page will navigate away — no need to reset loading state
   }
 
   return (
@@ -108,9 +110,16 @@ export function LoginForm({ callbackUrl }: Props) {
       <button
         type="submit"
         disabled={isLoading}
-        className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-surface transition-all hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-surface hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
+        {isLoading ? (
+          <>
+            <Loader2 className="h-5 w-5 animate-spin" />
+            Iniciando sesión...
+          </>
+        ) : (
+          "Iniciar Sesión"
+        )}
       </button>
     </form>
   )
