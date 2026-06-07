@@ -1,22 +1,60 @@
+"use client"
+
+import { useState, useEffect, Suspense } from "react"
+import { signIn } from "next-auth/react"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
-import { Mail, Lock } from "lucide-react"
+import { Mail, Lock, Loader2 } from "lucide-react"
 
-interface Props {
-  searchParams: Promise<{ error?: string; callbackUrl?: string }>
-}
+function LoginForm() {
+  const router = useRouter()
+  const searchParams = useSearchParams()
+  const errorParam = searchParams.get("error")
+  const callbackUrl = searchParams.get("callbackUrl") ?? "/dashboard"
 
-export default async function LoginPage({ searchParams }: Props) {
-  const { error: errorParam, callbackUrl } = await searchParams
-  const cbUrl = callbackUrl ?? "/dashboard"
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const authError =
-    errorParam === "CredentialsSignin"
-      ? "Credenciales inválidas. Verifica tu email y contraseña."
-      : errorParam === "OAuthAccountNotLinked"
-        ? "Este email ya está registrado con otro método de inicio de sesión."
-      : errorParam
-        ? "Ocurrió un error al iniciar sesión. Intenta de nuevo."
-        : null
+  useEffect(() => {
+    if (errorParam === "CredentialsSignin") {
+      setError("Credenciales inválidas. Verifica tu email y contraseña.")
+    } else if (errorParam === "OAuthAccountNotLinked") {
+      setError(
+        "Este email ya está registrado con otro método de inicio de sesión.",
+      )
+    } else if (errorParam) {
+      setError("Ocurrió un error al iniciar sesión. Intenta de nuevo.")
+    }
+  }, [errorParam])
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    setError(null)
+    setIsLoading(true)
+
+    try {
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl,
+      })
+
+      if (result?.error) {
+        setError("Credenciales inválidas. Verifica tu email y contraseña.")
+        setIsLoading(false)
+        return
+      }
+
+      router.push(callbackUrl)
+      router.refresh()
+    } catch {
+      setError("Error de conexión. Intenta de nuevo.")
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-bg px-4 py-12 sm:px-6 lg:px-8">
@@ -37,19 +75,13 @@ export default async function LoginPage({ searchParams }: Props) {
         </div>
 
         <div className="mt-8 rounded-lg border border-border bg-surface p-8">
-          {authError && (
+          {error && (
             <div className="mb-6 rounded-md bg-danger-bg px-4 py-3 text-sm text-danger">
-              {authError}
+              {error}
             </div>
           )}
 
-          <form
-            action="/api/auth/login"
-            method="POST"
-            className="space-y-5"
-          >
-            <input type="hidden" name="callbackUrl" value={cbUrl} />
-
+          <form onSubmit={handleSubmit} className="space-y-5">
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-fg">
                 Email
@@ -64,6 +96,8 @@ export default async function LoginPage({ searchParams }: Props) {
                   type="email"
                   autoComplete="email"
                   required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@email.com"
                   className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
@@ -84,6 +118,8 @@ export default async function LoginPage({ searchParams }: Props) {
                   type="password"
                   autoComplete="current-password"
                   required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
                   className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
                 />
@@ -92,9 +128,11 @@ export default async function LoginPage({ searchParams }: Props) {
 
             <button
               type="submit"
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-surface hover:bg-accent-hover"
+              disabled={isLoading}
+              className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-surface hover:bg-accent-hover disabled:opacity-70"
             >
-              Iniciar Sesión
+              {isLoading && <Loader2 className="h-4 w-4 animate-spin" />}
+              {isLoading ? "Iniciando sesión..." : "Iniciar Sesión"}
             </button>
           </form>
 
@@ -110,7 +148,7 @@ export default async function LoginPage({ searchParams }: Props) {
           </div>
 
           <form action="/api/auth/signin/google" method="POST">
-            <input type="hidden" name="callbackUrl" value={cbUrl} />
+            <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <button
               type="submit"
               className="flex w-full items-center justify-center gap-3 rounded-md border border-border bg-surface px-4 py-3 text-sm font-medium text-fg hover:bg-primary-50"
@@ -137,5 +175,19 @@ export default async function LoginPage({ searchParams }: Props) {
         </p>
       </div>
     </div>
+  )
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center bg-bg">
+          <Loader2 className="h-8 w-8 animate-spin text-muted" />
+        </div>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   )
 }
