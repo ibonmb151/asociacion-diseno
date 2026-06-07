@@ -70,7 +70,7 @@ function LoginForm() {
           )}
 
           <form
-            action="/api/auth/login"
+            action="/api/auth/callback/credentials"
             method="POST"
             className="space-y-5"
           >
