@@ -92,8 +92,8 @@ export function Navbar() {
           href="/"
           className="flex items-center gap-2 font-heading text-lg font-semibold tracking-tight text-fg"
         >
-          <Home className="h-5 w-5 text-accent" />
-          <span>Asociación de Diseño</span>
+          <span className="flex h-7 w-7 items-center justify-center rounded-md bg-accent text-xs font-bold text-white">D</span>
+          <span>Deusto Design</span>
         </Link>
 
         {/* Desktop Navigation */}

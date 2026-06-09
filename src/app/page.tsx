@@ -4,31 +4,35 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
-  Briefcase,
-  MessageCircle,
   Building2,
-  FileText,
   GraduationCap,
-  Home,
   ChevronRight,
-  Globe,
+  Calendar,
+  Users,
+  Sparkles,
+  Lightbulb,
+  Palette,
+  MessageCircle,
+  Target,
+  Award,
+  Eye,
 } from "lucide-react";
 
 /* ─── Animation variants ─── */
 const easeOut = [0.25, 0.1, 0.25, 1] as const;
 
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 24 },
+  initial: { opacity: 0, y: 32 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.5, delay, ease: easeOut },
+  transition: { duration: 0.6, delay, ease: easeOut },
 });
 
 const scaleFade = (delay = 0) => ({
   initial: { opacity: 0, scale: 0.95 },
   whileInView: { opacity: 1, scale: 1 },
   viewport: { once: true, margin: "-60px" },
-  transition: { duration: 0.4, delay, ease: easeOut },
+  transition: { duration: 0.5, delay, ease: easeOut },
 });
 
 /* ─── HERO ─── */
@@ -36,177 +40,214 @@ const scaleFade = (delay = 0) => ({
 function HeroSection() {
   return (
     <section className="relative overflow-hidden bg-bg">
-      {/* Subtle editorial rule at the top */}
-      <div className="mx-auto h-px max-w-7xl bg-border" />
-
-      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-40">
-        <div className="mx-auto max-w-4xl">
-          {/* Eyebrow */}
-          <motion.span
-            {...fadeUp(0)}
-            className="editorial-eyebrow inline-block"
-          >
-            Comunidad de diseño
-          </motion.span>
-
-          {/* Main headline — editorial serif, light weight, dramatic */}
-          <motion.h1
-            {...fadeUp(0.1)}
-            className="mt-4 font-heading text-5xl font-light leading-[1.05] tracking-[-0.03em] text-fg sm:text-6xl md:text-7xl lg:text-8xl"
-          >
-            Donde el talento
-            <br />
-            <span className="gradient-text-warm">encuentra</span> su
-            oportunidad
-          </motion.h1>
-
-          {/* Standfirst — intentionally much smaller (dramatic scale jump) */}
-          <motion.p
-            {...fadeUp(0.2)}
-            className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
-          >
-            La plataforma que conecta a estudiantes de diseño con empresas.
-            Publica tu portfolio, participa en el foro, y construye tu futuro
-            profesional.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            {...fadeUp(0.3)}
-            className="mt-10 flex flex-col items-start gap-4 sm:flex-row"
-          >
-            <Link
-              href="/auth/register?type=student"
-              className="group inline-flex items-center gap-2 rounded-lg bg-accent px-6 py-3 text-sm font-medium text-white transition-all hover:bg-accent-hover active:scale-[0.98]"
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <div className="grid items-center gap-12 lg:grid-cols-5 lg:gap-16">
+          {/* Text side */}
+          <div className="lg:col-span-3">
+            <motion.span
+              {...fadeUp(0)}
+              className="section-label"
             >
-              <GraduationCap className="h-4 w-4" />
-              Empieza como Estudiante
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Link>
+              Deusto Design Association
+            </motion.span>
 
-            <Link
-              href="/auth/register?type=company"
-              className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-6 py-3 text-sm font-medium text-fg transition-all hover:border-muted hover:bg-surface active:scale-[0.98]"
+            <motion.h1
+              {...fadeUp(0.1)}
+              className="mt-6 hero-title text-fg"
             >
-              <Building2 className="h-4 w-4" />
-              Registra tu Empresa
-            </Link>
-          </motion.div>
+              El diseño
+              <br />
+              <span className="gradient-text">encuentra</span> su
+              <br />
+              comunidad
+            </motion.h1>
 
-          {/* Trust indicators — minimal, one accent use (the stat numbers) */}
+            <motion.p
+              {...fadeUp(0.2)}
+              className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-lg"
+            >
+              Un punto de encuentro para los diseñadores de Deusto. 
+              Identidad colectiva, formación complementaria, retos 
+              semanales y conexión directa con la industria.
+            </motion.p>
+
+            <motion.div
+              {...fadeUp(0.3)}
+              className="mt-8 flex flex-col gap-3 sm:flex-row"
+            >
+              <Link
+                href="/auth/register?type=student"
+                className="btn-primary"
+              >
+                Únete a la comunidad
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                href="/portfolio"
+                className="btn-ghost"
+              >
+                <Palette className="h-4 w-4" />
+                Ver proyectos
+              </Link>
+            </motion.div>
+
+            <motion.div
+              {...fadeUp(0.4)}
+              className="mt-12 flex flex-wrap gap-x-8 gap-y-4"
+            >
+              {[
+                { value: "300+", label: "Diseñadores" },
+                { value: "50+", label: "Charlas al año" },
+                { value: "15+", label: "Empresas" },
+                { value: "40+", label: "Proyectos" },
+              ].map((s) => (
+                <div key={s.label}>
+                  <p className="font-heading text-3xl font-medium text-accent sm:text-4xl">
+                    {s.value}
+                  </p>
+                  <p className="mt-0.5 text-xs text-muted">{s.label}</p>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+
+          {/* Image side — editorial photo grid */}
           <motion.div
-            {...fadeUp(0.4)}
-            className="mt-16 flex flex-wrap gap-x-10 gap-y-3"
+            {...scaleFade(0.2)}
+            className="lg:col-span-2"
           >
-            <div>
-              <span className="font-heading text-xl font-medium text-accent">
-                1.200+
-              </span>
-              <span className="ml-2 text-sm text-muted">estudiantes</span>
-            </div>
-            <div>
-              <span className="font-heading text-xl font-medium text-accent">
-                250+
-              </span>
-              <span className="ml-2 text-sm text-muted">empresas</span>
-            </div>
-            <div>
-              <span className="font-heading text-xl font-medium text-accent">
-                Gratuito
-              </span>
-              <span className="ml-2 text-sm text-muted">sin compromiso</span>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="editorial-image-card aspect-[3/4]">
+                <div className="flex h-full w-full items-center justify-center bg-accent-light/40">
+                  <Users className="h-12 w-12 text-accent/30" />
+                </div>
+              </div>
+              <div className="mt-8">
+                <div className="editorial-image-card aspect-square">
+                  <div className="flex h-full w-full items-center justify-center bg-secondary-muted">
+                    <Palette className="h-10 w-10 text-secondary/30" />
+                  </div>
+                </div>
+                <div className="editorial-image-card mt-3 aspect-[4/3]">
+                  <div className="flex h-full w-full items-center justify-center bg-accent-light/30">
+                    <Target className="h-8 w-8 text-accent/30" />
+                  </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         </div>
       </div>
-
-      {/* Bottom editorial rule */}
-      <div className="mx-auto h-px max-w-7xl bg-border" />
     </section>
   );
 }
 
-/* ─── BENTO SHOWCASE ─── */
+/* ─── IMAGE GALLERY STRIP ─── */
 
-function BentoShowcaseSection() {
-  const items = [
+function GalleryStrip() {
+  const images = [
+    { color: "bg-accent-light/50", icon: <Users className="h-6 w-6 text-accent/40" /> },
+    { color: "bg-secondary-muted", icon: <Palette className="h-6 w-6 text-secondary/40" /> },
+    { color: "bg-accent-light/30", icon: <Target className="h-6 w-6 text-accent/40" /> },
+    { color: "bg-accent/10", icon: <Award className="h-6 w-6 text-accent/40" /> },
+    { color: "bg-secondary-muted", icon: <Eye className="h-6 w-6 text-secondary/40" /> },
+  ];
+
+  return (
+    <section className="overflow-hidden border-y border-border bg-surface">
+      <div className="flex gap-0">
+        {[...Array(2)].map((_, setIdx) => (
+          <div key={setIdx} className="marquee-track flex">
+            {images.map((img, i) => (
+              <div
+                key={`${setIdx}-${i}`}
+                className={`flex h-48 w-72 shrink-0 items-center justify-center ${img.color}`}
+              >
+                <div className="text-center">
+                  {img.icon}
+                  <p className="mt-2 text-xs text-muted/60">
+                    Espacio para fotografía
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* ─── FEATURES ─── */
+
+function FeaturesSection() {
+  const features = [
     {
-      icon: <Briefcase className="h-5 w-5" />,
-      title: "Portfolio",
+      icon: <Calendar className="h-6 w-6" />,
+      title: "Charlas semanales",
       description:
-        "Crea un portfolio profesional con tus mejores proyectos. Comparte tu trabajo con empresas interesadas en tu talento.",
-      href: "/portfolio",
-      span: "col-span-1 row-span-1",
+        "Cada semana traemos a profesionales en activo para compartir novedades del sector, herramientas emergentes y casos reales.",
     },
     {
-      icon: <MessageCircle className="h-5 w-5" />,
-      title: "Foro",
+      icon: <Target className="h-6 w-6" />,
+      title: "Retos de diseño",
       description:
-        "Debate con otros diseñadores, comparte conocimientos, resuelve dudas y construye tu red profesional.",
-      href: "/forum",
-      span: "col-span-1 row-span-1",
+        "Challenges semanales para poner a prueba tus habilidades. Diseña productos, conceptos o servicios y recibe feedback de la comunidad.",
     },
     {
-      icon: <FileText className="h-5 w-5" />,
-      title: "Propuestas",
+      icon: <Users className="h-6 w-6" />,
+      title: "Equipos multidisciplinares",
       description:
-        "Las empresas publican necesidades reales. Presenta tus propuestas y trabaja en proyectos que impulsarán tu carrera.",
-      href: "/proposals",
-      span: "col-span-1 row-span-1 lg:col-span-2",
+        "Trabaja en equipos más grandes combinando perfiles de branding, UX, producto e ilustración. Como en un estudio real.",
     },
     {
-      icon: <Building2 className="h-5 w-5" />,
-      title: "Networking",
+      icon: <Lightbulb className="h-6 w-6" />,
+      title: "Formación continua",
       description:
-        "Conecta con empresas que buscan talento de diseño. Recibe ofertas y construye tu red profesional.",
-      href: "/networking",
-      span: "col-span-1 row-span-1",
+        "Talleres sobre IA aplicada al diseño, nuevas herramientas, modelado 3D y todo lo que la industria demanda.",
+    },
+    {
+      icon: <MessageCircle className="h-6 w-6" />,
+      title: "Feedback colectivo",
+      description:
+        "Comparte tus proyectos y recibe críticas constructivas de compañeros, profesores y profesionales del sector.",
+    },
+    {
+      icon: <Building2 className="h-6 w-6" />,
+      title: "Conexión con empresas",
+      description:
+        "Las empresas publican necesidades reales. Presenta tus propuestas, colabora y construye tu red profesional.",
     },
   ];
 
   return (
     <section className="bg-surface">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
-        {/* Section header */}
-        <motion.div {...fadeUp(0)} className="mb-14 max-w-xl">
-          <span className="editorial-eyebrow">Plataforma</span>
-          <h2 className="mt-3 font-heading text-3xl font-medium leading-tight text-fg sm:text-4xl">
-            Todo lo que necesitas
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <motion.div {...fadeUp(0)} className="mx-auto mb-16 max-w-2xl text-center">
+          <span className="section-label">Qué ofrecemos</span>
+          <h2 className="mt-6 font-heading text-4xl font-medium leading-tight text-fg sm:text-5xl">
+            Una comunidad diseñada
             <br />
-            en un solo lugar
+            <span className="text-accent">para crecer juntos</span>
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted">
-            Tanto si eres estudiante como empresa, nuestra plataforma está
-            diseñada para conectar el talento con las oportunidades.
-          </p>
         </motion.div>
 
-        {/* Bento grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item, i) => (
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {features.map((f, i) => (
             <motion.div
-              key={item.title}
-              {...scaleFade(i * 0.1)}
-              className={`bento-card group relative flex flex-col ${item.span}`}
+              key={f.title}
+              {...fadeUp(i * 0.08)}
+              className="card group"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-accent-light/50 text-accent">
-                {item.icon}
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent-light text-accent">
+                {f.icon}
               </div>
-
-              <h3 className="font-heading text-lg font-semibold text-fg">
-                {item.title}
+              <h3 className="mt-5 font-heading text-lg font-semibold text-fg">
+                {f.title}
               </h3>
-              <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">
-                {item.description}
+              <p className="mt-2 text-sm leading-relaxed text-muted">
+                {f.description}
               </p>
-
-              <Link
-                href={item.href}
-                className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-colors hover:text-accent-hover"
-              >
-                Explorar
-                <ChevronRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-              </Link>
             </motion.div>
           ))}
         </div>
@@ -215,132 +256,187 @@ function BentoShowcaseSection() {
   );
 }
 
-/* ─── MERGED STATS + TESTIMONIAL ─── */
+/* ─── UPCOMING EVENTS / TALKS ─── */
 
-function StatsTestimonialSection() {
-  const stats = [
-    { value: "1.200+", label: "Estudiantes" },
-    { value: "250+", label: "Empresas" },
-    { value: "3.500+", label: "Proyectos" },
-    { value: "98%", label: "Satisfacción" },
-  ];
-
-  return (
-    <section className="bg-secondary-muted/30">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* Stats */}
-          <div>
-            <motion.span {...fadeUp(0)} className="editorial-eyebrow">
-              Comunidad
-            </motion.span>
-            <motion.h2
-              {...fadeUp(0.1)}
-              className="mt-3 font-heading text-3xl font-medium leading-tight text-fg sm:text-4xl"
-            >
-              Una comunidad que crece
-            </motion.h2>
-            <motion.p
-              {...fadeUp(0.15)}
-              className="mt-3 text-base leading-relaxed text-muted"
-            >
-              Miles de estudiantes y empresas ya confían en nosotros.
-            </motion.p>
-
-            <div className="mt-10 grid grid-cols-2 gap-8">
-              {stats.map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  {...scaleFade(i * 0.1)}
-                >
-                  <p className="font-heading text-3xl font-medium text-accent sm:text-4xl">
-                    {stat.value}
-                  </p>
-                  <p className="mt-1 text-sm text-muted">{stat.label}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Testimonial as editorial pull quote */}
-          <motion.div
-            {...scaleFade(0.2)}
-            className="relative flex items-center"
-          >
-            <blockquote className="border-l-2 border-accent pl-6 sm:pl-10">
-              <p className="font-heading text-xl font-light leading-relaxed text-fg sm:text-2xl">
-                &ldquo;Esta plataforma me conectó con mi primera oportunidad
-                profesional. El portfolio me ayudó a destacar y una empresa
-                contactó conmigo a las dos semanas.&rdquo;
-              </p>
-              <footer className="mt-6">
-                <p className="text-sm font-medium text-fg">María García</p>
-                <p className="text-sm text-muted">
-                  Diseñadora UX/UI · Miembro desde 2025
-                </p>
-              </footer>
-            </blockquote>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── HOW IT WORKS ─── */
-
-function HowItWorksSection() {
-  const steps = [
+function EventsSection() {
+  const events = [
     {
-      number: "01",
-      title: "Crea tu perfil",
-      description:
-        "Regístrate como estudiante o empresa. Completa tu perfil con tu experiencia y áreas de interés.",
+      day: "17",
+      month: "Jun",
+      title: "IA generativa aplicada al diseño de producto",
+      speaker: "Ane Urrutia — Design Lead, IDEO",
+      type: "Charla",
     },
     {
-      number: "02",
-      title: "Comparte y conecta",
-      description:
-        "Publica proyectos en tu portfolio, participa en el foro, o publica necesidades como empresa.",
+      day: "24",
+      month: "Jun",
+      title: "Design Systems: de la teoría a la práctica",
+      speaker: "Unai Martínez — UX Engineer, Cabify",
+      type: "Taller",
     },
     {
-      number: "03",
-      title: "Crece profesionalmente",
-      description:
-        "Recibe propuestas, conecta con empresas, colabora en proyectos reales y construye tu carrera.",
+      day: "01",
+      month: "Jul",
+      title: "Challenge: Rediseña una app en 48h",
+      speaker: "Organizado por la comunidad",
+      type: "Reto",
     },
   ];
 
   return (
     <section className="bg-bg">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
-        <motion.div {...fadeUp(0)} className="mb-16 max-w-xl">
-          <span className="editorial-eyebrow">Cómo funciona</span>
-          <h2 className="mt-3 font-heading text-3xl font-medium leading-tight text-fg sm:text-4xl">
-            Tres pasos para impulsar
-            <br />
-            tu carrera de diseño
-          </h2>
-        </motion.div>
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <motion.div {...fadeUp(0)} className="max-w-xl">
+            <span className="section-label">Próximos eventos</span>
+            <h2 className="mt-6 font-heading text-4xl font-medium leading-tight text-fg sm:text-5xl">
+              Charlas, talleres y retos
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted">
+              Cada semana activamos la comunidad con contenido diseñado para 
+              complementar tu formación universitaria.
+            </p>
+          </motion.div>
+          <Link
+            href="/forum"
+            className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-accent hover:text-accent-hover"
+          >
+            Ver todos los eventos
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
 
-        <div className="grid gap-10 sm:grid-cols-3">
-          {steps.map((step, i) => (
-            <motion.div
-              key={step.number}
-              {...fadeUp(i * 0.15)}
-              className="relative"
-            >
-              <span className="font-heading text-6xl font-light text-border sm:text-7xl">
-                {step.number}
-              </span>
-              <h3 className="mt-2 font-heading text-xl font-semibold text-fg">
-                {step.title}
-              </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted">
-                {step.description}
-              </p>
+        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {events.map((e, i) => (
+            <motion.div key={e.title} {...fadeUp(i * 0.1)}>
+              <div className="event-card">
+                <div className="event-date">
+                  <span className="event-date-day">{e.day}</span>
+                  <span className="event-date-month">{e.month}</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <span className="tag">{e.type}</span>
+                  <h3 className="mt-2 font-heading text-base font-semibold leading-snug text-fg">
+                    {e.title}
+                  </h3>
+                  <p className="mt-1 truncate text-xs text-muted">
+                    {e.speaker}
+                  </p>
+                </div>
+              </div>
             </motion.div>
           ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── FEATURED PROJECTS ─── */
+
+function ProjectsSection() {
+  const projects = [
+    {
+      title: "Identidad Visual — Café de Altura",
+      author: "Lucía García",
+      tags: ["Branding", "Packaging"],
+      gradient: "from-accent/20 to-secondary/20",
+    },
+    {
+      title: "App — EcoTracker",
+      author: "Marc López",
+      tags: ["UX/UI", "Sostenibilidad"],
+      gradient: "from-secondary/20 to-accent/20",
+    },
+    {
+      title: "Packaging Sostenible — Oliva Eco",
+      author: "Ana Martínez",
+      tags: ["Packaging", "Branding"],
+      gradient: "from-accent/20 to-accent-light",
+    },
+  ];
+
+  return (
+    <section className="bg-surface">
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <motion.div {...fadeUp(0)} className="max-w-xl">
+            <span className="section-label">Portfolio destacado</span>
+            <h2 className="mt-6 font-heading text-4xl font-medium leading-tight text-fg sm:text-5xl">
+              Proyectos de la comunidad
+            </h2>
+          </motion.div>
+          <Link
+            href="/portfolio"
+            className="inline-flex shrink-0 items-center gap-1 text-sm font-medium text-accent hover:text-accent-hover"
+          >
+            Ver todos los proyectos
+            <ChevronRight className="h-3.5 w-3.5" />
+          </Link>
+        </div>
+
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {projects.map((p, i) => (
+            <motion.div key={p.title} {...scaleFade(i * 0.1)}>
+              <div className="project-card group cursor-pointer">
+                <div
+                  className={`flex aspect-[4/3] items-center justify-center rounded-t-xl bg-gradient-to-br ${p.gradient}`}
+                >
+                  <Palette className="h-16 w-16 text-accent/30" />
+                </div>
+                <div className="p-5">
+                  <div className="flex flex-wrap gap-1.5">
+                    {p.tags.map((t) => (
+                      <span key={t} className="tag">{t}</span>
+                    ))}
+                  </div>
+                  <h3 className="mt-3 font-heading text-base font-semibold leading-snug text-fg">
+                    {p.title}
+                  </h3>
+                  <p className="mt-1 text-sm text-muted">por {p.author}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ─── TESTIMONIAL ─── */
+
+function TestimonialSection() {
+  return (
+    <section className="section-dark">
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
+        <div className="mx-auto max-w-4xl">
+          <motion.div {...scaleFade(0)} className="text-center">
+            <span className="inline-block font-body text-xs font-semibold tracking-[0.12em] uppercase text-secondary">
+              Lo que dicen
+            </span>
+            <blockquote className="mt-8">
+              <p className="font-heading text-2xl font-light leading-relaxed text-dark-fg sm:text-3xl lg:text-4xl">
+                &ldquo;Esta comunidad me ha dado acceso a profesionales 
+                y herramientas que en clase simplemente no existen. 
+                Las charlas semanales me abrieron los ojos a lo que 
+                realmente demanda la industria.&rdquo;
+              </p>
+              <footer className="mt-8">
+                <div className="mx-auto flex items-center justify-center gap-3">
+                  <div className="avatar bg-accent/30" />
+                  <div className="text-left">
+                    <p className="text-sm font-medium text-dark-fg">
+                      María García
+                    </p>
+                    <p className="text-xs text-dark-muted">
+                      Diseñadora UX/UI · Miembro desde 2025
+                    </p>
+                  </div>
+                </div>
+              </footer>
+            </blockquote>
+          </motion.div>
         </div>
       </div>
     </section>
@@ -352,33 +448,34 @@ function HowItWorksSection() {
 function CTASection() {
   return (
     <section className="bg-accent">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8 lg:py-28">
+      <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-28 lg:px-8 lg:py-32">
         <motion.div
           {...fadeUp(0)}
-          className="mx-auto max-w-2xl text-center"
+          className="mx-auto max-w-3xl text-center"
         >
-          <h2 className="font-heading text-3xl font-medium leading-tight text-white sm:text-4xl">
-            ¿Listo para formar parte?
+          <h2 className="font-heading text-4xl font-medium leading-tight text-white sm:text-5xl">
+            ¿Eres diseñador de Deusto?
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-accent-light">
-            Únete a la Asociación de Diseño y descubre un mundo de
-            oportunidades.
+          <p className="mt-6 text-lg leading-relaxed text-accent-light/90">
+            Únete a la asociación y forma parte de una comunidad que está 
+            redefiniendo el diseño en la universidad. Charlas, retos, 
+            proyectos reales y una red de contactos que impulsará tu carrera.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/auth/register?type=student"
-              className="inline-flex items-center gap-2 rounded-lg bg-surface px-6 py-3 text-sm font-medium text-accent transition-all hover:bg-accent-light active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-8 py-3.5 text-sm font-medium text-accent transition-all hover:bg-accent-light active:scale-[0.98]"
             >
               <GraduationCap className="h-4 w-4" />
-              Únete como Estudiante
+              Quiero unirme
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/auth/register?type=company"
-              className="inline-flex items-center gap-2 rounded-lg border border-surface/30 bg-transparent px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10 active:scale-[0.98]"
+              className="inline-flex items-center gap-2 rounded-lg border-2 border-white/40 bg-transparent px-8 py-3.5 text-sm font-medium text-white transition-all hover:bg-white/10 active:scale-[0.98]"
             >
               <Building2 className="h-4 w-4" />
-              Registra tu Empresa
+              Soy una empresa
             </Link>
           </div>
         </motion.div>
@@ -391,26 +488,25 @@ function CTASection() {
 
 function FooterSection() {
   return (
-    <footer className="border-t border-border bg-surface">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
+    <footer className="section-dark border-t border-white/10">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
-              className="flex items-center gap-2 font-heading text-lg font-semibold text-fg"
+              className="font-heading text-lg font-semibold text-dark-fg"
             >
-              <Home className="h-5 w-5 text-accent" />
-              <span>Asociación de Diseño</span>
+              Deusto Design
             </Link>
-            <p className="mt-3 text-sm leading-relaxed text-muted">
-              Conectando el talento del diseño con las mejores oportunidades
-              profesionales.
+            <p className="mt-3 text-sm leading-relaxed text-dark-muted">
+              Asociación de diseño de la Universidad de Deusto. 
+              Conectando estudiantes, profesores y empresas para 
+              construir el futuro del diseño.
             </p>
           </div>
 
           <div>
-            <h3 className="font-heading text-sm font-semibold text-fg">
+            <h3 className="font-heading text-sm font-semibold text-dark-fg">
               Plataforma
             </h3>
             <ul className="mt-4 space-y-3">
@@ -422,7 +518,7 @@ function FooterSection() {
           </div>
 
           <div>
-            <h3 className="font-heading text-sm font-semibold text-fg">
+            <h3 className="font-heading text-sm font-semibold text-dark-fg">
               Comunidad
             </h3>
             <ul className="mt-4 space-y-3">
@@ -433,27 +529,25 @@ function FooterSection() {
           </div>
 
           <div>
-            <h3 className="font-heading text-sm font-semibold text-fg">
-              Legal
+            <h3 className="font-heading text-sm font-semibold text-dark-fg">
+              Deusto
             </h3>
             <ul className="mt-4 space-y-3">
-              <FooterLink href="/terms" label="Términos" />
-              <FooterLink href="/privacy" label="Privacidad" />
-              <li className="text-sm text-muted">
-                hola@asociacion-diseno.es
+              <FooterLink href="https://deusto.es" label="Universidad de Deusto" />
+              <li className="text-sm text-dark-muted">
+                diseño@deusto.es
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
-          <p className="text-sm text-muted">
-            &copy; {new Date().getFullYear()} Asociación de Diseño
+        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 sm:flex-row">
+          <p className="text-sm text-dark-muted">
+            &copy; {new Date().getFullYear()} Deusto Design Association
           </p>
-          <div className="flex items-center gap-2 text-sm text-muted">
-            <Globe className="h-4 w-4" />
-            <span>Hecho para la comunidad de diseño</span>
-          </div>
+          <p className="text-sm text-dark-muted">
+            Hecho por y para la comunidad de diseño de Deusto
+          </p>
         </div>
       </div>
     </footer>
@@ -465,7 +559,7 @@ function FooterLink({ href, label }: { href: string; label: string }) {
     <li>
       <Link
         href={href}
-        className="text-sm text-muted transition-colors hover:text-fg"
+        className="text-sm text-dark-muted transition-colors hover:text-dark-fg"
       >
         {label}
       </Link>
@@ -479,9 +573,11 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       <HeroSection />
-      <BentoShowcaseSection />
-      <StatsTestimonialSection />
-      <HowItWorksSection />
+      <GalleryStrip />
+      <FeaturesSection />
+      <EventsSection />
+      <ProjectsSection />
+      <TestimonialSection />
       <CTASection />
       <FooterSection />
     </div>

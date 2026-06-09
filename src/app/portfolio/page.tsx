@@ -3,11 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Plus, Pencil, Trash2, X } from "lucide-react";
-
-/* ------------------------------------------------------------------ */
-/*  Types                                                             */
-/* ------------------------------------------------------------------ */
+import { Plus, Pencil, Trash2, X, FolderOpen, Palette, Clock } from "lucide-react";
 
 interface Project {
   id: string;
@@ -47,9 +43,15 @@ const CATEGORIES = [
   { value: "OTHER", label: "Otros" },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Modal                                                             */
-/* ------------------------------------------------------------------ */
+function getCategoryGradient(category: string): string {
+  switch (category) {
+    case "UI_UX": return "from-accent/20 to-secondary/20";
+    case "GRAPHIC": return "from-secondary/20 to-accent/20";
+    case "PRODUCT": return "from-accent/20 to-accent-light";
+    case "MOTION": return "from-secondary-muted to-accent/20";
+    default: return "from-accent-light/50 to-secondary-muted";
+  }
+}
 
 function ProjectFormModal({
   project,
@@ -78,9 +80,7 @@ function ProjectFormModal({
   }, [project]);
 
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >,
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
   ) => {
     const target = e.target;
     const name = target.name;
@@ -99,10 +99,7 @@ function ProjectFormModal({
     const payload = {
       title: form.title,
       description: form.description,
-      tags: form.tags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
+      tags: form.tags.split(",").map((t) => t.trim()).filter(Boolean),
       category: form.category,
       visible: form.visible,
     };
@@ -132,14 +129,14 @@ function ProjectFormModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-fg/50 p-4">
-      <div className="w-full max-w-lg rounded-lg border border-border bg-surface p-6 shadow-lg">
+      <div className="w-full max-w-lg rounded-xl border border-border bg-surface p-6 shadow-lg">
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-heading text-xl font-semibold text-fg">
-            {isEditing ? "Editar Proyecto" : "Nuevo Proyecto"}
+            {isEditing ? "Editar proyecto" : "Nuevo proyecto"}
           </h2>
           <button
             onClick={onClose}
-            className="rounded-md p-1 text-muted hover:bg-primary-50 hover:text-fg"
+            className="rounded-md p-1 text-muted hover:bg-accent-light hover:text-fg"
           >
             <X className="h-5 w-5" />
           </button>
@@ -153,57 +150,44 @@ function ProjectFormModal({
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="title" className="mb-1 block text-sm font-medium text-fg">
-              Título
-            </label>
+            <label htmlFor="title" className="mb-1 block text-sm font-medium text-fg">Título</label>
             <input
               id="title" name="title" type="text" required
-              value={form.title}
-              onChange={handleChange}
-              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+              value={form.title} onChange={handleChange}
+              className="search-input pl-3"
             />
           </div>
-
           <div>
-            <label htmlFor="description" className="mb-1 block text-sm font-medium text-fg">
-              Descripción
-            </label>
+            <label htmlFor="description" className="mb-1 block text-sm font-medium text-fg">Descripción</label>
             <textarea
               id="description" name="description" required rows={4}
-              value={form.description}
-              onChange={handleChange}
-              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+              value={form.description} onChange={handleChange}
+              className="search-input pl-3 resize-none"
             />
           </div>
-
           <div>
             <label htmlFor="tags" className="mb-1 block text-sm font-medium text-fg">
               Tags <span className="text-muted">(separados por coma)</span>
             </label>
             <input
               id="tags" name="tags" type="text"
-              value={form.tags}
-              onChange={handleChange}
+              value={form.tags} onChange={handleChange}
               placeholder="branding, identidad visual, figma"
-              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+              className="search-input pl-3"
             />
           </div>
-
           <div>
-            <label htmlFor="category" className="mb-1 block text-sm font-medium text-fg">
-              Categoría
-            </label>
+            <label htmlFor="category" className="mb-1 block text-sm font-medium text-fg">Categoría</label>
             <select
               id="category" name="category"
               value={form.category} onChange={handleChange}
-              className="w-full rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+              className="select-input w-full"
             >
               {CATEGORIES.map((cat) => (
                 <option key={cat.value} value={cat.value}>{cat.label}</option>
               ))}
             </select>
           </div>
-
           <div className="flex items-center gap-2">
             <input
               id="visible" name="visible" type="checkbox"
@@ -214,19 +198,12 @@ function ProjectFormModal({
               Proyecto visible en mi perfil público
             </label>
           </div>
-
           <div className="flex justify-end gap-3 pt-2">
-            <button
-              type="button" onClick={onClose}
-              className="rounded-md border border-border px-4 py-2 text-sm font-medium text-fg hover:bg-primary-50"
-            >
+            <button type="button" onClick={onClose} className="btn-ghost">
               Cancelar
             </button>
-            <button
-              type="submit" disabled={saving}
-              className="rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
-            >
-              {saving ? "Guardando..." : isEditing ? "Guardar" : "Crear"}
+            <button type="submit" disabled={saving} className="btn-primary">
+              {saving ? "Guardando..." : isEditing ? "Guardar cambios" : "Crear proyecto"}
             </button>
           </div>
         </form>
@@ -235,9 +212,97 @@ function ProjectFormModal({
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Page                                                              */
-/* ------------------------------------------------------------------ */
+function ProjectCard({
+  project,
+  onEdit,
+  onDelete,
+}: {
+  project: Project;
+  onEdit: () => void;
+  onDelete: () => void;
+}) {
+  const shortDescription =
+    project.description.length > 100
+      ? project.description.slice(0, 100) + "..."
+      : project.description;
+
+  const createdDate = new Date(project.createdAt).toLocaleDateString("es-ES", {
+    year: "numeric", month: "short",
+  });
+
+  const categoryLabel = CATEGORIES.find((c) => c.value === project.category)?.label ?? project.category;
+
+  return (
+    <div className="project-card group">
+      {/* Image area */}
+      <Link href={`/portfolio/${project.id}`}>
+        <div className={`flex aspect-[4/3] items-center justify-center rounded-t-xl bg-gradient-to-br ${getCategoryGradient(project.category)}`}>
+          <Palette className="h-14 w-14 text-accent/30 transition-transform group-hover:scale-110" />
+        </div>
+      </Link>
+
+      <div className="p-5">
+        {/* Category + visibility */}
+        <div className="flex items-center justify-between">
+          <span className="tag text-[10px]">{categoryLabel}</span>
+          {!project.visible && (
+            <span className="rounded-md bg-warning-bg px-2 py-0.5 text-[10px] font-medium text-warning">
+              Oculto
+            </span>
+          )}
+        </div>
+
+        {/* Title */}
+        <Link
+          href={`/portfolio/${project.id}`}
+          className="mt-3 block font-heading text-base font-semibold leading-snug text-fg transition-colors hover:text-accent"
+        >
+          {project.title}
+        </Link>
+
+        <p className="mt-1.5 text-sm leading-relaxed text-muted">{shortDescription}</p>
+
+        {/* Tags */}
+        {project.tags.length > 0 && (
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            {project.tags.slice(0, 4).map((tag) => (
+              <span key={tag} className="rounded-full bg-accent-light/30 px-2 py-0.5 text-[11px] text-accent">
+                {tag}
+              </span>
+            ))}
+            {project.tags.length > 4 && (
+              <span className="text-[11px] text-muted">+{project.tags.length - 4}</span>
+            )}
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
+          <div className="flex items-center gap-1.5 text-xs text-muted">
+            <Clock className="h-3 w-3" />
+            {createdDate}
+          </div>
+          <div className="flex gap-1">
+            <button
+              onClick={onEdit}
+              className="rounded-md p-1.5 text-muted transition-colors hover:bg-accent-light hover:text-accent"
+              title="Editar"
+            >
+              <Pencil className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={onDelete}
+              className="rounded-md p-1.5 text-muted transition-colors hover:bg-danger-bg hover:text-danger"
+              title="Eliminar"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function PortfolioPage() {
   const router = useRouter();
@@ -297,46 +362,51 @@ export default function PortfolioPage() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="mb-10 flex items-center justify-between">
-        <div>
-          <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-            Mi Portfolio
-          </h1>
-          <p className="mt-1 text-sm text-muted">
-            Gestiona tus proyectos y muestra tu trabajo.
-          </p>
-        </div>
+      {/* Editorial header */}
+      <div className="page-header mb-2">
+        <span className="page-header-eyebrow">Proyectos</span>
+        <h1 className="font-heading text-4xl font-medium tracking-tight text-fg sm:text-5xl">
+          Portfolio
+        </h1>
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+          Comparte tu trabajo con la comunidad. Cada proyecto es una 
+          oportunidad para recibir feedback, inspirar a otros y construir 
+          tu identidad profesional.
+        </p>
+      </div>
+
+      {/* Action bar */}
+      <div className="mb-10 flex items-center justify-between border-b border-border pb-5">
+        <p className="text-sm text-muted">
+          {projects.length} {projects.length === 1 ? "proyecto" : "proyectos"}
+        </p>
         <button
           onClick={() => { setEditingProject(null); setModalOpen(true); }}
-          className="inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
+          className="btn-primary"
         >
           <Plus className="h-4 w-4" />
-          Nuevo Proyecto
+          Nuevo proyecto
         </button>
       </div>
 
       {/* Empty state */}
       {projects.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-20">
-          <svg className="mb-4 h-12 w-12 text-border" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
-              d="M2 6a2 2 0 012-2h5l2 2h7a2 2 0 012 2v1M4 10h16l-1.78 5.33A2 2 0 0116.28 17H7.72a2 2 0 01-1.94-1.33L4 10z" />
-          </svg>
-          <p className="text-lg font-medium text-muted">No tienes proyectos todavía</p>
-          <p className="mt-1 text-sm text-muted">Crea tu primer proyecto para mostrar tu trabajo.</p>
+        <div className="empty-state">
+          <FolderOpen className="h-12 w-12 text-border" />
+          <p className="mt-4 text-lg font-medium text-muted">No tienes proyectos todavía</p>
+          <p className="mt-1 text-sm text-muted">Crea tu primer proyecto para mostrar tu trabajo a la comunidad.</p>
           <button
             onClick={() => setModalOpen(true)}
-            className="mt-4 inline-flex items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
+            className="btn-primary mt-6"
           >
             <Plus className="h-4 w-4" />
-            Crear Proyecto
+            Crear proyecto
           </button>
         </div>
       )}
 
       {/* Grid */}
-      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
           <ProjectCard
             key={project.id}
@@ -355,80 +425,5 @@ export default function PortfolioPage() {
         />
       )}
     </main>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/*  Project Card                                                      */
-/* ------------------------------------------------------------------ */
-
-function ProjectCard({
-  project,
-  onEdit,
-  onDelete,
-}: {
-  project: Project;
-  onEdit: () => void;
-  onDelete: () => void;
-}) {
-  const shortDescription =
-    project.description.length > 120
-      ? project.description.slice(0, 120) + "..."
-      : project.description;
-
-  const createdDate = new Date(project.createdAt).toLocaleDateString("es-ES", {
-    year: "numeric", month: "long", day: "numeric",
-  });
-
-  return (
-    <div className="bento-card group flex flex-col">
-      {/* Header */}
-      <div className="mb-3 flex items-start justify-between">
-        <Link
-          href={`/portfolio/${project.id}`}
-          className="font-heading text-lg font-semibold text-fg hover:text-accent"
-        >
-          {project.title}
-        </Link>
-        <div className="flex gap-1 opacity-0 transition group-hover:opacity-100">
-          <button onClick={onEdit} className="rounded-md p-1.5 text-muted hover:bg-primary-50 hover:text-accent" title="Editar">
-            <Pencil className="h-4 w-4" />
-          </button>
-          <button onClick={onDelete} className="rounded-md p-1.5 text-muted hover:bg-danger-bg hover:text-danger" title="Eliminar">
-            <Trash2 className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-
-      <p className="mb-4 flex-1 text-sm leading-relaxed text-muted">{shortDescription}</p>
-
-      {/* Category badge */}
-      <div className="mb-3">
-        <span className="inline-block rounded-md bg-accent-light/30 px-2.5 py-0.5 text-xs font-medium text-accent">
-          {CATEGORIES.find((c) => c.value === project.category)?.label ?? project.category}
-        </span>
-      </div>
-
-      {/* Tags */}
-      {project.tags.length > 0 && (
-        <div className="mb-4 flex flex-wrap gap-1.5">
-          {project.tags.map((tag) => (
-            <span key={tag} className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted">
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-
-      {/* Footer */}
-      <div className="flex items-center justify-between border-t border-border pt-3 text-xs text-muted">
-        <span>{createdDate}</span>
-        {!project.visible && (
-          <span className="rounded-md bg-warning-bg px-1.5 py-0.5 text-warning">
-            Oculto
-          </span>
-        )}
-      </div>
-    </div>
   );
 }

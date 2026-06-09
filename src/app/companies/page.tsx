@@ -89,13 +89,15 @@ export default async function CompaniesPage({
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-          Directorio de Empresas
+      {/* Editorial header */}
+      <div className="page-header mb-2">
+        <span className="page-header-eyebrow">Colaboración</span>
+        <h1 className="font-heading text-4xl font-medium tracking-tight text-fg sm:text-5xl">
+          Empresas
         </h1>
-        <p className="mt-1 text-muted">
-          Explora empresas asociadas y descubre oportunidades de colaboración.
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+          Explora las empresas que colaboran con la comunidad. Descubre 
+          oportunidades, necesidades reales y construye tu red profesional.
         </p>
       </div>
 
@@ -104,9 +106,7 @@ export default async function CompaniesPage({
 
       {/* Results count */}
       <p className="mb-6 text-sm text-muted">
-        {companies.length === 0
-          ? "No se encontraron empresas"
-          : `${companies.length} empresa${companies.length !== 1 ? "s" : ""} encontrada${companies.length !== 1 ? "s" : ""}`}
+        {total} {total === 1 ? "empresa" : "empresas"}
       </p>
 
       {/* Grid */}
@@ -115,10 +115,10 @@ export default async function CompaniesPage({
           <Link
             key={company.id}
             href={`/companies/${company.id}`}
-            className="group bento-card p-5"
+            className="listing-card group"
           >
-            {/* Logo placeholder */}
-            <div className="mb-4 flex justify-center">
+            {/* Logo */}
+            <div className="flex justify-center">
               {company.logo ? (
                 <img
                   src={company.logo}
@@ -126,7 +126,7 @@ export default async function CompaniesPage({
                   className="h-20 w-20 rounded-xl object-cover ring-2 ring-border"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-primary-50 text-2xl font-bold text-fg">
+                <div className="flex h-20 w-20 items-center justify-center rounded-xl bg-accent-light/50 text-xl font-bold text-accent">
                   {company.name
                     ?.split(" ")
                     .map((n) => n[0])
@@ -138,14 +138,12 @@ export default async function CompaniesPage({
             </div>
 
             {/* Name & Sector */}
-            <div className="text-center">
+            <div className="mt-4 text-center">
               <h3 className="font-heading text-lg font-medium text-fg">
                 {company.name}
               </h3>
               {company.sector && (
-                <span className="mt-1 inline-block rounded-md bg-accent-light/30 px-2 py-0.5 text-xs text-accent">
-                  {company.sector}
-                </span>
+                <span className="tag mt-1">{company.sector}</span>
               )}
             </div>
 
@@ -207,20 +205,20 @@ function CompanySearch({ initialQuery }: { initialQuery: string }) {
       className="mb-6"
     >
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" />
+        <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
         <input
           type="text"
           name="q"
           defaultValue={initialQuery}
           placeholder="Buscar por nombre, sector o descripción..."
-          className="w-full rounded-md border border-border bg-surface px-3 py-2 pl-10 pr-10 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+          className="search-input"
         />
         {initialQuery && (
           <a
             href="/companies"
             className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-muted"
           >
-            <X className="h-5 w-5" />
+            <X className="h-4 w-4" />
           </a>
         )}
       </div>

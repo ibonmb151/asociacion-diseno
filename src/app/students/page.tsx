@@ -72,13 +72,15 @@ export default async function StudentsPage({
 
   return (
     <main className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-          Directorio de Estudiantes
+      {/* Editorial header */}
+      <div className="page-header mb-2">
+        <span className="page-header-eyebrow">Comunidad</span>
+        <h1 className="font-heading text-4xl font-medium tracking-tight text-fg sm:text-5xl">
+          Estudiantes
         </h1>
-        <p className="mt-1 text-muted">
-          Explora perfiles de estudiantes de diseño.
+        <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+          Conoce a los diseñadores de Deusto. Explora perfiles, descubre 
+          talento y encuentra compañeros para tu próximo proyecto.
         </p>
       </div>
 
@@ -87,9 +89,7 @@ export default async function StudentsPage({
 
       {/* Results count */}
       <p className="mb-6 text-sm text-muted">
-        {students.length === 0
-          ? "No se encontraron estudiantes"
-          : `${students.length} estudiante${students.length !== 1 ? "s" : ""} encontrado${students.length !== 1 ? "s" : ""}`}
+        {total} {total === 1 ? "estudiante" : "estudiantes"}
       </p>
 
       {/* Grid */}
@@ -98,10 +98,10 @@ export default async function StudentsPage({
           <Link
             key={student.id}
             href={`/students/${student.id}`}
-            className="group bento-card p-5"
+            className="listing-card group"
           >
             {/* Avatar */}
-            <div className="mb-4 flex justify-center">
+            <div className="flex justify-center">
               {student.image ? (
                 <img
                   src={student.image}
@@ -109,7 +109,7 @@ export default async function StudentsPage({
                   className="h-20 w-20 rounded-full object-cover ring-2 ring-border"
                 />
               ) : (
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary-50 text-2xl font-bold text-fg">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent-light/50 text-xl font-bold text-accent">
                   {student.name
                     ?.split(" ")
                     .map((n) => n[0])
@@ -121,7 +121,7 @@ export default async function StudentsPage({
             </div>
 
             {/* Name & Course */}
-            <div className="text-center">
+            <div className="mt-4 text-center">
               <h3 className="font-heading text-lg font-medium text-fg">
                 {student.name ?? "Usuario"}
               </h3>
@@ -143,17 +143,12 @@ export default async function StudentsPage({
             {student.studentProfile?.skills && student.studentProfile.skills.length > 0 && (
               <div className="mt-3 flex flex-wrap justify-center gap-1.5">
                 {student.studentProfile.skills.slice(0, 4).map((skill) => (
-                  <span
-                    key={skill}
-                    className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
-                  >
+                  <span key={skill} className="rounded-full bg-accent-light/30 px-2.5 py-0.5 text-xs text-accent">
                     {skill}
                   </span>
                 ))}
                 {student.studentProfile.skills.length > 4 && (
-                  <span className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted">
-                    +{student.studentProfile.skills.length - 4}
-                  </span>
+                  <span className="text-xs text-muted">+{student.studentProfile.skills.length - 4}</span>
                 )}
               </div>
             )}

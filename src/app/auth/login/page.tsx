@@ -45,17 +45,18 @@ function LoginForm() {
             href="/"
             className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
-            <span>Asociación de Diseño</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-sm font-bold text-white">D</span>
+            <span>Deusto Design</span>
           </Link>
           <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">
-            Iniciar Sesión
+            Iniciar sesión
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Accede a tu cuenta para continuar
+            Accede a tu cuenta de la comunidad
           </p>
         </div>
 
-        <div className="mt-8 rounded-lg border border-border bg-surface p-8">
+        <div className="mt-8 rounded-xl border border-border bg-surface p-8 shadow-sm">
           {error && (
             <div className="mb-6 rounded-md bg-danger-bg px-4 py-3 text-sm text-danger">
               {error}
@@ -92,7 +93,7 @@ function LoginForm() {
                   autoComplete="email"
                   required
                   placeholder="tu@email.com"
-                  className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+                  className="search-input pl-10"
                 />
               </div>
             </div>
@@ -112,7 +113,7 @@ function LoginForm() {
                   autoComplete="current-password"
                   required
                   placeholder="••••••••"
-                  className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+                  className="search-input pl-10"
                 />
               </div>
             </div>
@@ -120,9 +121,9 @@ function LoginForm() {
             <button
               type="submit"
               disabled={!csrfLoaded}
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-70"
+              className="btn-primary w-full justify-center py-3"
             >
-              {!csrfLoaded ? "Cargando..." : "Iniciar Sesión"}
+              {!csrfLoaded ? "Cargando..." : "Iniciar sesión"}
             </button>
           </form>
 
@@ -132,7 +133,7 @@ function LoginForm() {
             </div>
             <div className="relative flex justify-center text-xs">
               <span className="bg-surface px-4 text-muted">
-                O continúa con email
+                O continúa con
               </span>
             </div>
           </div>
@@ -141,7 +142,7 @@ function LoginForm() {
             <input type="hidden" name="callbackUrl" value={callbackUrl} />
             <button
               type="submit"
-              className="flex w-full items-center justify-center gap-3 rounded-md border border-border bg-surface px-4 py-3 text-sm font-medium text-fg hover:bg-primary-50"
+              className="btn-ghost w-full justify-center py-3"
             >
               <svg className="h-5 w-5" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -149,7 +150,7 @@ function LoginForm() {
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
               </svg>
-              Iniciar sesión con Google
+              Google
             </button>
           </form>
         </div>

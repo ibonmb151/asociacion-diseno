@@ -162,33 +162,35 @@ export default async function ProposalsPage({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      {/* ── Cabecera ── */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-            Propuestas
-          </h1>
-          <p className="mt-1 text-muted">
-            Propón ideas, colaboraciones o eventos para la comunidad de diseño.
-          </p>
+      {/* Editorial header */}
+      <div className="page-header mb-2">
+        <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+          <div>
+            <span className="page-header-eyebrow">Colaboración</span>
+            <h1 className="font-heading text-4xl font-medium tracking-tight text-fg sm:text-5xl">
+              Propuestas
+            </h1>
+            <p className="mt-3 max-w-xl text-base leading-relaxed text-muted">
+              Propón ideas, colaboraciones o eventos. La comunidad vota, 
+              comenta y se suma a las mejores iniciativas.
+            </p>
+          </div>
+          <Link
+            href="/proposals/new"
+            className="btn-primary shrink-0"
+          >
+            <Plus className="h-4 w-4" />
+            Nueva propuesta
+          </Link>
         </div>
-
-        <Link
-          href="/proposals/new"
-          className="inline-flex shrink-0 items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
-        >
-          <Plus className="h-4 w-4" />
-          Nueva Propuesta
-        </Link>
       </div>
 
       {/* ── Filtros ── */}
       <form
         method="GET"
         action="/proposals"
-        className="mt-8 flex flex-wrap items-end gap-3"
+        className="mb-8 flex flex-wrap items-end gap-3"
       >
-        {/* Búsqueda */}
         <div className="relative min-w-0 flex-1 basis-48">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" />
           <input
@@ -196,42 +198,25 @@ export default async function ProposalsPage({
             name="q"
             defaultValue={q ?? ""}
             placeholder="Buscar propuestas…"
-            className="w-full rounded-md border border-border bg-surface px-3 py-2 pl-10 pr-4 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+            className="search-input"
           />
         </div>
 
-        {/* Categoría */}
-        <select
-          name="category"
-          defaultValue={category ?? ""}
-          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
-        >
+        <select name="category" defaultValue={category ?? ""} className="select-input">
           <option value="">Todas las categorías</option>
           {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
+            <option key={cat} value={cat}>{cat}</option>
           ))}
         </select>
 
-        {/* Estado */}
-        <select
-          name="status"
-          defaultValue={status ?? ""}
-          className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-fg focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
-        >
+        <select name="status" defaultValue={status ?? ""} className="select-input">
           <option value="">Todos los estados</option>
           {STATUS_OPTIONS.map((opt) => (
-            <option key={opt.value} value={opt.value}>
-              {opt.label}
-            </option>
+            <option key={opt.value} value={opt.value}>{opt.label}</option>
           ))}
         </select>
 
-        <button
-          type="submit"
-          className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-fg hover:bg-primary-50"
-        >
+        <button type="submit" className="btn-ghost">
           Filtrar
         </button>
       </form>
@@ -239,8 +224,8 @@ export default async function ProposalsPage({
       {/* ── Lista de propuestas ── */}
       <div className="mt-6 space-y-3">
         {proposals.length === 0 ? (
-          <div className="rounded-lg border border-dashed border-border bg-primary-50 px-6 py-16 text-center">
-            <Lightbulb className="mx-auto h-10 w-10 text-muted" />
+          <div className="empty-state">
+            <Lightbulb className="h-10 w-10 text-border" />
             <p className="mt-4 text-lg font-medium text-muted">
               {q || category || status
                 ? "No hay propuestas que coincidan con los filtros"
@@ -254,10 +239,10 @@ export default async function ProposalsPage({
             {!q && !category && !status && (
               <Link
                 href="/proposals/new"
-                className="mt-6 inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:text-accent-hover"
+                className="btn-primary mt-6"
               >
+                <Plus className="h-4 w-4" />
                 Crear primera propuesta
-                <ChevronRight className="h-4 w-4" />
               </Link>
             )}
           </div>
@@ -303,43 +288,32 @@ function ProposalCard({
   return (
     <Link
       href={`/proposals/${proposal.id}`}
-      className="group relative block bento-card p-5"
+      className="listing-card group"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
-          {/* Badges */}
           <div className="flex flex-wrap items-center gap-2">
-            {/* Estado */}
             <span
-              className={`inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}
+              className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium ${statusConfig.bg} ${statusConfig.text}`}
             >
-              <span
-                className={`h-1.5 w-1.5 rounded-full ${statusConfig.dot}`}
-              />
+              <span className={`h-1.5 w-1.5 rounded-full ${statusConfig.dot}`} />
               {statusConfig.label}
             </span>
-
-            {/* Categoría */}
             {proposal.category && (
-              <span
-                className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-medium ${getCategoryStyles(proposal.category)}`}
-              >
+              <span className={`rounded-full px-2.5 py-0.5 text-[11px] font-medium ${getCategoryStyles(proposal.category)}`}>
                 {proposal.category}
               </span>
             )}
           </div>
 
-          {/* Título */}
-          <h2 className="mt-2 font-heading text-lg font-medium text-fg">
+          <h2 className="mt-2 font-heading text-base font-medium text-fg transition-colors group-hover:text-accent">
             {proposal.title}
           </h2>
 
-          {/* Descripción corta */}
-          <p className="mt-1.5 text-sm leading-6 text-muted line-clamp-2">
+          <p className="mt-1.5 text-sm leading-relaxed text-muted line-clamp-2">
             {shortDescription}
           </p>
 
-          {/* Meta */}
           <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted">
             <span>
               Por{" "}
@@ -350,17 +324,16 @@ function ProposalCard({
             <span>{formatDate(proposal.createdAt)}</span>
           </div>
 
-          {/* Tags */}
           {proposal.tags.length > 0 && (
             <div className="mt-3 flex flex-wrap gap-1.5">
-              {proposal.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-md bg-primary-50 px-2 py-0.5 text-xs text-muted"
-                >
+              {proposal.tags.slice(0, 4).map((tag) => (
+                <span key={tag} className="rounded-full bg-accent-light/30 px-2.5 py-0.5 text-[11px] text-accent">
                   {tag}
                 </span>
               ))}
+              {proposal.tags.length > 4 && (
+                <span className="text-[11px] text-muted">+{proposal.tags.length - 4}</span>
+              )}
             </div>
           )}
         </div>

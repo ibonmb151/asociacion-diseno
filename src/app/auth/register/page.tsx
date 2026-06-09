@@ -113,19 +113,19 @@ function RegisterForm() {
             href="/"
             className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
-            <Home className="h-5 w-5 text-accent" />
-            <span>Asociación de Diseño</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-sm font-bold text-white">D</span>
+            <span>Deusto Design</span>
           </Link>
           <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">
-            Crear Cuenta
+            Crear cuenta
           </h2>
           <p className="mt-2 text-sm text-muted">
-            Únete a la comunidad de diseño más grande
+            Únete a la comunidad de diseño de Deusto
           </p>
         </div>
 
         {/* Card */}
-        <div className="mt-8 rounded-lg border border-border bg-surface p-8">
+        <div className="mt-8 rounded-xl border border-border bg-surface p-8 shadow-sm">
           {error && (
             <div className="mb-6 rounded-md bg-danger-bg px-4 py-3 text-sm text-danger">
               {error}
@@ -165,7 +165,7 @@ function RegisterForm() {
             type="button"
             onClick={handleGoogleRegister}
             disabled={isLoading}
-            className="flex w-full items-center justify-center gap-3 rounded-md border border-border bg-surface px-4 py-3 text-sm font-medium text-fg transition-all hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-50"
+            className="btn-ghost w-full justify-center py-3"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />
@@ -173,7 +173,7 @@ function RegisterForm() {
               <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
               <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
             </svg>
-            Registrarse con Google
+            Google
           </button>
 
           {/* Divider */}
@@ -379,7 +379,7 @@ function RegisterForm() {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-white transition-all hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+              className="btn-primary w-full justify-center py-3"
             >
               {isLoading ? (
                 <>
@@ -387,7 +387,7 @@ function RegisterForm() {
                   Creando cuenta...
                 </>
               ) : (
-                "Crear Cuenta"
+                "Crear cuenta"
               )}
             </button>
           </form>

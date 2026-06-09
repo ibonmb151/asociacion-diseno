@@ -18,25 +18,28 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Asociación de Diseño",
-    default: "Asociación de Diseño",
+    template: "%s | Deusto Design Association",
+    default: "Deusto Design Association",
   },
   description:
-    "Plataforma que conecta estudiantes de diseño con empresas. Crea tu portfolio, participa en el foro, y encuentra oportunidades profesionales.",
+    "Comunidad de diseño de la Universidad de Deusto. Conectamos estudiantes, profesores y empresas para compartir conocimiento, organizar charlas, retos de diseño y construir el futuro del diseño.",
   keywords: [
     "diseño",
+    "Deusto",
+    "comunidad",
     "portfolio",
     "estudiantes",
     "empresas",
-    "comunidad",
+    "charlas",
+    "retos",
     "foro",
     "networking",
   ],
-  authors: [{ name: "Asociación de Diseño" }],
+  authors: [{ name: "Deusto Design Association" }],
   openGraph: {
-    title: "Asociación de Diseño",
+    title: "Deusto Design Association",
     description:
-      "Plataforma que conecta estudiantes de diseño con empresas.",
+      "Comunidad de diseño de la Universidad de Deusto. Charlas, retos, proyectos y conexión con la industria.",
     type: "website",
     locale: "es_ES",
   },
