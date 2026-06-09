@@ -1,8 +1,33 @@
 @import "tailwindcss";
 
+/* ── Fonts ── */
+@font-face {
+  font-family: "FK";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/FKGroteskNeue-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "FK";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/FKGroteskNeue-Medium.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Tiempos";
+  font-style: italic;
+  font-weight: 300;
+  font-display: swap;
+  src: url("/fonts/TiemposFine-LightItalic.woff2") format("woff2");
+}
+
 /* ────────────────────────────────────────────────────────────
    DEUSTO DESIGN ASSOCIATION — Brand Identity
-   Inspired by: Warm Editorial + Oddly Made + Deusto DNA
+   Inspired by: Ang Studio + Oddly Made + Deusto DNA
    ──────────────────────────────────────────────────────────── */
 
 :root {
@@ -98,8 +123,8 @@
   --radius-xl: var(--radius-xl);
   --radius-full: var(--radius-full);
 
-  --font-heading: var(--font-heading), "Georgia", serif;
-  --font-body: var(--font-body), system-ui, sans-serif;
+  --font-heading: "Tiempos", "Georgia", serif;
+  --font-body: "FK", system-ui, sans-serif;
 }
 
 /* ── Base styles ── */
