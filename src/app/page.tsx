@@ -91,24 +91,7 @@ function HeroSection() {
               </Link>
             </motion.div>
 
-            <motion.div
-              {...fadeUp(0.4)}
-              className="mt-12 flex flex-wrap gap-x-8 gap-y-4"
-            >
-              {[
-                { value: "300+", label: "Diseñadores" },
-                { value: "50+", label: "Charlas al año" },
-                { value: "15+", label: "Empresas" },
-                { value: "40+", label: "Proyectos" },
-              ].map((s) => (
-                <div key={s.label}>
-                  <p className="font-heading text-3xl font-medium text-accent sm:text-4xl">
-                    {s.value}
-                  </p>
-                  <p className="mt-0.5 text-xs text-muted">{s.label}</p>
-                </div>
-              ))}
-            </motion.div>
+
           </div>
 
           {/* Image side — editorial photo grid */}
