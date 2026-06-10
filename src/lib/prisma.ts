@@ -1,6 +1,10 @@
 import { PrismaClient } from "@/generated/prisma/client";
-import { PrismaPg } from "@prisma/adapter-pg";
-import pg from "pg";
+import { PrismaNeon } from "@prisma/adapter-neon";
+import { neonConfig } from "@neondatabase/serverless";
+import ws from "ws";
+
+// Use WebSocket for Neon serverless driver (works even when port 5432 is blocked)
+neonConfig.webSocketConstructor = ws;
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
@@ -11,8 +15,7 @@ function createClient(): PrismaClient {
   if (!url) {
     throw new Error("DATABASE_URL environment variable is not set");
   }
-  const pool = new pg.Pool({ connectionString: url });
-  const adapter = new PrismaPg(pool);
+  const adapter = new PrismaNeon({ connectionString: url });
   return new (PrismaClient as any)({ adapter }) as PrismaClient;
 }
 

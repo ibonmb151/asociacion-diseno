@@ -45,7 +45,7 @@ function LoginForm() {
             href="/"
             className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
-            <span>Asociación de Diseño</span>
+            <span>Deusto Design Association</span>
           </Link>
           <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">
             Iniciar Sesión

@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { RecentOpportunities } from "@/components/recent-opportunities";
+import { Suspense } from "react";
+import { TrianglePanels } from "@/components/TrianglePanels";
 
 type Role = "STUDENT" | "COMPANY" | "ADMIN";
 
@@ -54,31 +56,7 @@ async function getAdminStats() {
   return { students, companies, projects };
 }
 
-function QuickLinks({
-  links,
-}: {
-  links: { label: string; href: string; icon: React.ElementType }[];
-}) {
-  return (
-    <div className="grid grid-cols-2 gap-4 sm:grid-cols-5">
-      {links.map((link) => {
-        const Icon = link.icon;
-        return (
-          <Link
-            key={link.label}
-            href={link.href}
-            className="bento-card flex flex-col items-center gap-3 p-6 text-center"
-          >
-            <Icon className="h-8 w-8 text-accent" />
-            <span className="text-sm font-medium text-muted">
-              {link.label}
-            </span>
-          </Link>
-        );
-      })}
-    </div>
-  );
-}
+/* ─── Stats ─── */
 
 function StatsRow({ stats }: { stats: StatCard[] }) {
   return (
@@ -89,13 +67,11 @@ function StatsRow({ stats }: { stats: StatCard[] }) {
           href={stat.href}
           className="bento-card flex items-center gap-4 p-5"
         >
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-accent-light/50 text-accent">
+          <div className="flex h-12 w-12 items-center justify-center bg-accent-light/50 text-accent">
             {stat.icon}
           </div>
           <div>
-            <p className="font-heading text-2xl font-medium text-fg">
-              {stat.value}
-            </p>
+            <p className="font-heading text-2xl font-medium text-fg">{stat.value}</p>
             <p className="text-sm text-muted">{stat.label}</p>
           </div>
         </Link>
@@ -104,100 +80,9 @@ function StatsRow({ stats }: { stats: StatCard[] }) {
   );
 }
 
-/* ─── Dashboard variants ─── */
+/* ─── Stats Section (async) ─── */
 
-function StudentDashboard({ user }: { user: SessionUser }) {
-  const quickLinks = [
-    { label: "Mi Perfil", href: "/profile/edit", icon: User },
-    { label: "Mis Proyectos", href: "/portfolio", icon: FolderOpen },
-    { label: "Mi Portfolio", href: "/portfolio", icon: FileText },
-    { label: "Foro", href: "/forum", icon: MessageSquare },
-    { label: "Empresas", href: "/companies", icon: Briefcase },
-  ];
-
-  return (
-    <div className="space-y-10">
-      <div>
-        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-          Bienvenido, {user.name}
-        </h1>
-        <p className="mt-1 text-sm text-muted">
-          Gestiona tu perfil, proyectos y conexiones profesionales.
-        </p>
-      </div>
-
-      <QuickLinks links={quickLinks} />
-      <StatsSection userId={user.id} role="STUDENT" />
-      <RecentOpportunities />
-    </div>
-  );
-}
-
-async function CompanyDashboard({ user }: { user: SessionUser }) {
-  const company = await prisma.company.findUnique({
-    where: { email: user.email },
-    select: { id: true },
-  })
-  const quickLinks = [
-    { label: "Mi Perfil", href: "/profile/edit", icon: User },
-    { label: "Publicar Necesidad", href: company ? `/companies/${company.id}/needs/new` : "#", icon: FileText },
-    { label: "Buscar Talentos", href: "/students", icon: Search },
-    { label: "Mis Contactos", href: "/networking", icon: HeartHandshake },
-    { label: "Mensajes", href: "/messages", icon: MessageSquare },
-  ];
-
-  return (
-    <div className="space-y-10">
-      <div>
-        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-          Bienvenido, {user.name}
-        </h1>
-        <p className="mt-1 text-sm text-muted">
-          Encuentra talento, publica oportunidades y gestiona tu red de
-          contactos.
-        </p>
-      </div>
-
-      <QuickLinks links={quickLinks} />
-      <StatsSection userId={user.id} role="COMPANY" />
-    </div>
-  );
-}
-
-function AdminDashboard({ user }: { user: SessionUser }) {
-  const quickLinks = [
-    { label: "Usuarios", href: "/admin/users", icon: Users },
-    { label: "Proyectos", href: "/admin/projects", icon: FolderOpen },
-    { label: "Empresas", href: "/admin/companies", icon: Briefcase },
-    { label: "Reportes", href: "/admin/reports", icon: FileText },
-  ];
-
-  return (
-    <div className="space-y-10">
-      <div>
-        <h1 className="font-heading text-3xl font-medium tracking-tight text-fg">
-          Panel de Administración
-        </h1>
-        <p className="mt-1 text-sm text-muted">
-          Bienvenido, {user.name}. Gestiona la plataforma.
-        </p>
-      </div>
-
-      <QuickLinks links={quickLinks} />
-      <StatsSection userId={user.id} role="ADMIN" />
-    </div>
-  );
-}
-
-/* ─── Stats ─── */
-
-async function StatsSection({
-  userId,
-  role,
-}: {
-  userId: string;
-  role: Role;
-}) {
+async function StatsSection({ userId, role }: { userId: string; role: Role }) {
   let stats: StatCard[] = [];
 
   if (role === "STUDENT") {
@@ -229,6 +114,68 @@ async function StatsSection({
   return <StatsRow stats={stats} />;
 }
 
+/* ─── Dashboard variants ─── */
+
+function StudentDashboard({ user }: { user: SessionUser }) {
+  const quickLinks = [
+    { label: "Mi Perfil",    href: "/profile/edit", icon: <User className="h-10 w-10" />,          description: "Identidad" },
+    { label: "Proyectos",    href: "/portfolio",    icon: <FolderOpen className="h-10 w-10" />,    description: "Portfolio" },
+    { label: "Mi Portfolio", href: "/portfolio",    icon: <FileText className="h-10 w-10" />,      description: "Showcase",  offsetX: 24 },
+    { label: "Foro",         href: "/forum",        icon: <MessageSquare className="h-10 w-10" />, description: "Comunidad" },
+    { label: "Networking",   href: "/networking",   icon: <Users className="h-10 w-10" />,         description: "Red",       offsetX: 24 },
+  ];
+
+  return (
+    <>
+      {/* ── Full-viewport panel section ── */}
+      <div style={{ height: "100vh" }}>
+        <TrianglePanels links={quickLinks} />
+      </div>
+
+    </>
+  );
+}
+
+async function CompanyDashboard({ user }: { user: SessionUser }) {
+  const company = await prisma.company.findUnique({
+    where: { email: user.email },
+    select: { id: true },
+  });
+
+  const quickLinks = [
+    { label: "Mi Perfil",       href: "/profile/edit",                                    icon: <User className="h-10 w-10" />,           description: "Identidad" },
+    { label: "Pub. Necesidad",  href: company ? `/companies/${company.id}/needs/new` : "#", icon: <FileText className="h-10 w-10" />,       description: "Publicar" },
+    { label: "Talentos",        href: "/students",                                         icon: <Search className="h-10 w-10" />,         description: "Buscar" },
+    { label: "Mis Contactos",   href: "/networking",                                       icon: <HeartHandshake className="h-10 w-10" />, description: "Red" },
+    { label: "Mensajes",        href: "/messages",                                         icon: <MessageSquare className="h-10 w-10" />,  description: "Inbox" },
+  ];
+
+  return (
+    <>
+      <div style={{ height: "100vh" }}>
+        <TrianglePanels links={quickLinks} />
+      </div>
+    </>
+  );
+}
+
+function AdminDashboard({ user }: { user: SessionUser }) {
+  const quickLinks = [
+    { label: "Usuarios",  href: "/admin/users",     icon: <Users className="h-10 w-10" />,      description: "Gestionar" },
+    { label: "Proyectos", href: "/admin/projects",   icon: <FolderOpen className="h-10 w-10" />, description: "Revisar" },
+    { label: "Empresas",  href: "/admin/companies",  icon: <Briefcase className="h-10 w-10" />,  description: "Gestionar" },
+    { label: "Reportes",  href: "/admin/reports",    icon: <FileText className="h-10 w-10" />,   description: "Analizar" },
+  ];
+
+  return (
+    <>
+      <div style={{ height: "100vh" }}>
+        <TrianglePanels links={quickLinks} />
+      </div>
+    </>
+  );
+}
+
 /* ─── Page ─── */
 
 export default async function DashboardPage() {
@@ -236,9 +183,9 @@ export default async function DashboardPage() {
 
   if (!session?.user) {
     return (
-      <div className="flex min-h-[60vh] items-center justify-center">
+      <main className="flex min-h-[60vh] items-center justify-center">
         <p className="text-muted">Inicia sesión para acceder al dashboard.</p>
-      </div>
+      </main>
     );
   }
 
@@ -250,11 +197,5 @@ export default async function DashboardPage() {
     ADMIN: <AdminDashboard user={user} />,
   };
 
-  return (
-    <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
-      {roleComponents[user.role] ?? (
-        <p className="text-muted">Rol no reconocido.</p>
-      )}
-    </main>
-  );
+  return <>{roleComponents[user.role] ?? <p className="p-8 text-muted">Rol no reconocido.</p>}</>;
 }

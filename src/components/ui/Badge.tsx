@@ -9,19 +9,17 @@ interface BadgeProps {
 }
 
 const variantStyles: Record<BadgeVariant, string> = {
-  accent: "bg-accent-light/30 text-accent",
-  secondary: "bg-secondary-muted text-secondary",
-  muted: "bg-primary-50 text-muted",
-  success: "bg-success-bg text-success",
-  warning: "bg-warning-bg text-warning",
-  danger: "bg-danger-bg text-danger",
+  accent: "border border-accent text-accent",
+  secondary: "border border-fg text-fg",
+  muted: "border border-border text-muted",
+  success: "border border-success text-success",
+  warning: "border border-warning text-warning",
+  danger: "border border-danger text-danger",
 };
 
-export function Badge({ children, variant = "accent", className = "" }: BadgeProps) {
+export function Badge({ children, variant = "muted", className = "" }: BadgeProps) {
   return (
-    <span
-      className={`inline-block rounded-md px-2.5 py-0.5 text-xs font-medium ${variantStyles[variant]} ${className}`}
-    >
+    <span className={`inline-block px-2 py-0.5 text-xs font-medium ${variantStyles[variant]} ${className}`}>
       {children}
     </span>
   );

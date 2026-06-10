@@ -114,7 +114,7 @@ function RegisterForm() {
             className="inline-flex items-center gap-2 font-heading text-xl font-semibold text-fg"
           >
             <Home className="h-5 w-5 text-accent" />
-            <span>Asociación de Diseño</span>
+            <span>Deusto Design Association</span>
           </Link>
           <h2 className="mt-6 font-heading text-3xl font-medium tracking-tight text-fg">
             Crear Cuenta

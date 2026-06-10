@@ -1,59 +1,47 @@
 @import "tailwindcss";
 
 /* ────────────────────────────────────────────────────────────
-   WARM EDITORIAL DESIGN SYSTEM
-   Inspired by: Warm Editorial (OD) + Bento Grid + Anti-AI-slop
-   Palette roles:
-     bg       → warm off-white paper (#FAF7F2)
-     surface  → elevated cards (#FFFFFF)
-     fg       → near-black warm (#1C1A17)
-     accent   → terracotta (#C0512F)  — max 2 uses per screen
-     secondary→ forest (#2F5B4F)
-     muted    → warm grey (#8A817A)
-     border   → warm light (#E8E2D9)
+   DEUSTO DESIGN — EDITORIAL SYSTEM
+   Reference: oddlymade.webflow.io
+   Fonts: Instrument Serif (headings) + Inter (body)
+   Palette: white bg, #F6F6F6 surface, black text
+   No border-radius. No shadows. Pure editorial.
    ──────────────────────────────────────────────────────────── */
 
 :root {
-  /* ── Neutrals (70-90% of pixels) ── */
-  --bg: #faf7f2;
-  --surface: #ffffff;
-  --fg: #1c1a17;
-  --muted: #8a817a;
-  --border: #e8e2d9;
+  --bg: #ffffff;
+  --surface: #f6f6f6;
+  --fg: #111111;
+  --muted: #777777;
+  --border: #e5e5e5;
 
-  /* ── Accent (5-10%) ── */
-  --accent: #c0512f;
-  --accent-hover: #a84428;
-  --accent-light: #f0d6cc;
+  --accent: #c8102e;
+  --accent-hover: #a50d25;
+  --accent-light: #fde8ea;
 
-  /* ── Secondary ── */
-  --secondary: #2f5b4f;
-  --secondary-light: #4a7a6a;
-  --secondary-muted: #dce8e3;
+  --secondary: #111111;
+  --secondary-light: #444444;
+  --secondary-muted: #f6f6f6;
 
-  /* ── Semantic (<5%) ── */
-  --success: #2b7a4e;
-  --success-bg: #e4f0ea;
-  --warning: #b8860b;
-  --warning-bg: #fef4d6;
-  --danger: #c0392b;
-  --danger-bg: #f5e0de;
+  --success: #1a7a4e;
+  --success-bg: #e6f4ee;
+  --warning: #7a5c00;
+  --warning-bg: #fef7e0;
+  --danger: #c8102e;
+  --danger-bg: #fde8ea;
 
-  /* ── Effects (<1%) ── */
-  --shadow-sm: 0 1px 3px rgba(28, 26, 23, 0.06);
-  --shadow-md: 0 4px 12px rgba(28, 26, 23, 0.08);
-  --shadow-lg: 0 8px 24px rgba(28, 26, 23, 0.1);
-  --shadow-xl: 0 16px 48px rgba(28, 26, 23, 0.12);
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
 
-  /* ── Radii ── */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
   --radius-full: 9999px;
 }
 
-/* ── Tailwind v4 theme tokens ── */
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -76,33 +64,32 @@
   --color-danger: var(--danger);
   --color-danger-bg: var(--danger-bg);
 
-  --color-shadow-sm: var(--shadow-sm);
-  --color-shadow-md: var(--shadow-md);
-  --color-shadow-lg: var(--shadow-lg);
-  --color-shadow-xl: var(--shadow-xl);
-
   --radius-sm: var(--radius-sm);
-
-  /* ── Backward-compatible aliases ── */
-  --color-primary: var(--fg);
-  --color-primary-light: #3a3530;
-  --color-primary-dark: #0f0e0c;
-  --color-primary-50: #f5f0eb;
-  --color-primary-100: var(--border);
-  --color-primary-200: #d5cdc2;
-  --color-primary-300: #b8ae9f;
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
   --radius-full: var(--radius-full);
 
+  --color-primary: var(--fg);
+  --color-primary-light: #444444;
+  --color-primary-dark: #000000;
+  --color-primary-50: #f6f6f6;
+  --color-primary-100: var(--border);
+  --color-primary-200: #cccccc;
+  --color-primary-300: #aaaaaa;
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted);
+
   --font-heading: var(--font-heading), "Georgia", serif;
   --font-body: var(--font-body), system-ui, sans-serif;
 }
 
-/* ── Base styles ── */
+/* ── Custom cursor: hide native on mouse devices ── */
+@media (pointer: fine) {
+  *, *::before, *::after { cursor: none !important; }
+}
+
+/* ── Base ── */
 body {
   background-color: var(--bg);
   color: var(--fg);
@@ -112,198 +99,115 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Editorial heading hierarchy */
+/* ── Heading hierarchy (Instrument Serif style) ── */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading), "Georgia", serif;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
   color: var(--fg);
 }
 
 h1 {
-  font-size: clamp(2.5rem, 5vw, 5rem);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-size: clamp(3.5rem, 9vw, 8rem);
+  letter-spacing: -0.04em;
+  line-height: 1.0;
 }
 
 h2 {
-  font-size: clamp(1.75rem, 3vw, 2.5rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  letter-spacing: -0.03em;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
-  font-weight: 600;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  letter-spacing: -0.02em;
 }
 
-/* ── Content links (apply class .content-link to text links) ── */
+/* ── Selection ── */
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); }
+::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+/* ── Editorial utilities ── */
+.editorial-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.editorial-eyebrow-accent {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* ── Bento cards — sharp, no radius ── */
+.bento-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  padding: 2rem;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.bento-card:hover {
+  background: var(--bg);
+  border-color: var(--fg);
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Divider lines ── */
+.editorial-line {
+  width: 100%;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ── Content links ── */
 .content-link {
   color: var(--accent);
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
   text-underline-offset: 3px;
-  transition: text-decoration-color 0.15s ease;
 }
 
 .content-link:hover {
   text-decoration-color: var(--accent);
 }
 
-/* ── Selection ── */
-::selection {
-  background: var(--accent-light);
-  color: var(--fg);
-}
-
-/* ── Scrollbar ── */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--bg);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--border);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
-}
-
-/* ── Animations ── */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-@keyframes countUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Utility classes ── */
-.editorial-eyebrow {
-  font-family: var(--font-body);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.terracotta-underline {
-  text-decoration: underline;
-  text-decoration-color: var(--accent);
-  text-underline-offset: 4px;
-  text-decoration-thickness: 2px;
-}
-
-.bento-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-}
-
-.bento-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.bento-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Stat counter styling */
-.stat-value {
-  font-family: var(--font-heading), "Georgia", serif;
-  font-size: 2.5rem;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--fg);
-}
-
-.stat-label {
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  color: var(--muted);
-  margin-top: 0.25rem;
-}
-
-/* Accent discipline — only 2 uses per screen */
-.accent-limited {
-  color: var(--accent);
-}
-
-.accent-bg-limited {
-  background-color: var(--accent);
-}
-
-/* Smooth transitions for interactive elements */
-a, button, input, textarea, select, .bento-card {
-  transition: all 0.2s ease;
-}
-
-/* Gradient text (use sparingly — max 1 per page) */
+/* ── Gradient text ── */
 .gradient-text-warm {
-  background: linear-gradient(135deg, var(--accent), var(--secondary));
+  background: linear-gradient(135deg, var(--accent), #e05c38);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* Responsive container padding */
-.section-padding {
-  padding: 5rem 1rem;
+/* ── Transitions ── */
+a, button { transition: all 0.15s ease; }
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-@media (min-width: 640px) {
-  .section-padding { padding: 6rem 1.5rem; }
-}
-
-@media (min-width: 1024px) {
-  .section-padding { padding: 7rem 2rem; }
-}
-
-/* Section spacing alternation for rhythm */
-.section-tight {
-  padding: 3rem 1rem;
-}
-
-@media (min-width: 640px) {
-  .section-tight { padding: 4rem 1.5rem; }
-}
-
-/* Bento grid span utilities */
-.bento-span-2 {
-  grid-column: span 2;
-}
-
-.bento-span-full {
-  grid-column: 1 / -1;
-}
-
-@media (max-width: 768px) {
-  .bento-span-2 {
-    grid-column: span 1;
-  }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }

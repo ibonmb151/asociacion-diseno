@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import { Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/SessionProvider";
 import { Navbar } from "@/components/Navbar";
+import { TransitionProvider } from "@/components/PageTransition";
+import { CustomCursor } from "@/components/CustomCursor";
+import { MenuOverlay } from "@/components/MenuOverlay";
+import { SwipeNavigator } from "@/components/SwipeNavigator";
 
-const playfair = Playfair_Display({
+const instrumentSerif = Instrument_Serif({
   variable: "--font-heading",
   subsets: ["latin"],
+  weight: ["400"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -18,25 +24,25 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Asociación de Diseño",
-    default: "Asociación de Diseño",
+    template: "%s | Deusto Design Association",
+    default: "Deusto Design Association",
   },
   description:
-    "Plataforma que conecta estudiantes de diseño con empresas. Crea tu portfolio, participa en el foro, y encuentra oportunidades profesionales.",
+    "La comunidad de diseño de la Universidad de Deusto. Portfolio, charlas con profesionales, challenges y conexión con la industria.",
   keywords: [
     "diseño",
+    "deusto",
     "portfolio",
     "estudiantes",
-    "empresas",
     "comunidad",
-    "foro",
-    "networking",
+    "charlas",
+    "challenges",
+    "bilbao",
   ],
-  authors: [{ name: "Asociación de Diseño" }],
+  authors: [{ name: "Deusto Design Association" }],
   openGraph: {
-    title: "Asociación de Diseño",
-    description:
-      "Plataforma que conecta estudiantes de diseño con empresas.",
+    title: "Deusto Design Association",
+    description: "La comunidad de diseño de la Universidad de Deusto.",
     type: "website",
     locale: "es_ES",
   },
@@ -50,12 +56,17 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
+      className={`${instrumentSerif.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-bg font-body text-fg selection:bg-accent-light">
+      <body className="bg-bg font-body text-fg">
         <SessionProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
+          <TransitionProvider>
+            <SwipeNavigator />
+            <Navbar />
+            <main>{children}</main>
+          </TransitionProvider>
+          <MenuOverlay />
+          <CustomCursor />
         </SessionProvider>
       </body>
     </html>
