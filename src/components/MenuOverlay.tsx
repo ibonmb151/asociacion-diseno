@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 
 /*
@@ -30,11 +29,9 @@ const SOCIAL_LINKS = [
 export function MenuOverlay() {
   const [open, setOpen]       = useState(false);
   const [hovered, setHovered] = useState<number | null>(null);
-  const { data: session }     = useSession();
   const pathname              = usePathname();
 
-  const links = (session ? NAV_LINKS : NAV_LINKS.filter((l) => l.href === "/"))
-    .filter((l) => l.href !== pathname);
+  const links = NAV_LINKS.filter((l) => l.href !== pathname);
 
   return (
     <div
