@@ -11,6 +11,7 @@ enum Role {
   STUDENT
   COMPANY
   ADMIN
+  REDACTOR
 }
 
 model User {
@@ -36,6 +37,46 @@ model User {
   proposals    Proposal[]
   contactRequests ContactRequest[]
   feedbacks       Feedback[]
+  newsletterEditions NewsletterEdition[]
+}
+
+// ------------------------------------------------------------------
+// El Semanal — newsletter de la asociación
+// ------------------------------------------------------------------
+
+model NewsletterEdition {
+  id        String    @id @default(cuid())
+  number    Int       @unique // edición #1, #2...
+  title     String // titular (IA + retoque del redactor)
+  summary   String // resumen que va en el email
+  pdfUrl    String // ruta del PDF alojado
+  coverUrl  String? // portada opcional
+  sentAt    DateTime? // null = borrador sin enviar
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  createdBy String
+  author    User      @relation(fields: [createdBy], references: [id])
+}
+
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  active    Boolean  @default(true) // false = dado de baja
+  token     String   @unique @default(cuid()) // para link de baja
+  source    String   @default("public") // public | member
+  createdAt DateTime @default(now())
+}
+
+// Solicitud de alta de profesionales/profesores. NO crean cuenta directamente:
+// contactan primero y la asociación les crea un correo institucional personalizado.
+model JoinRequest {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  type      String // "professional" | "professor"
+  message   String?
+  handled   Boolean  @default(false) // la asociación ya lo gestionó
+  createdAt DateTime @default(now())
 }
 
 model StudentProfile {

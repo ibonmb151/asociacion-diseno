@@ -16,9 +16,11 @@ import {
   Home,
   FileText,
   Briefcase,
+  Presentation,
+  CheckCircle2,
 } from "lucide-react";
 
-type UserType = "student" | "company";
+type UserType = "student" | "company" | "professional" | "professor";
 
 const inputBase =
   "block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30";
@@ -28,9 +30,10 @@ function RegisterForm() {
   const searchParams = useSearchParams();
   const typeParam = searchParams.get("type");
 
-  const [userType, setUserType] = useState<UserType>(
-    typeParam === "company" ? "company" : "student",
-  );
+  const paramToType = (p: string | null): UserType =>
+    p === "company" || p === "professional" || p === "professor" ? p : "student";
+
+  const [userType, setUserType] = useState<UserType>(paramToType(typeParam));
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -44,9 +47,17 @@ function RegisterForm() {
   const [companyPassword, setCompanyPassword] = useState("");
   const [companyDescription, setCompanyDescription] = useState("");
 
+  // Profesionales / profesores: solicitan contacto, no crean cuenta.
+  const [joinName, setJoinName] = useState("");
+  const [joinEmail, setJoinEmail] = useState("");
+  const [joinMessage, setJoinMessage] = useState("");
+  const [joinSent, setJoinSent] = useState(false);
+
+  const isContactType = userType === "professional" || userType === "professor";
+
   useEffect(() => {
-    if (typeParam === "company") setUserType("company");
-    else if (typeParam === "student") setUserType("student");
+    setUserType(paramToType(typeParam));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [typeParam]);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -99,6 +110,34 @@ function RegisterForm() {
     }
   }
 
+  async function handleJoinRequest(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/join-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: joinName,
+          email: joinEmail,
+          type: userType, // "professional" | "professor"
+          message: joinMessage,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "No se pudo enviar la solicitud. Intenta de nuevo.");
+      } else {
+        setJoinSent(true);
+      }
+    } catch {
+      setError("Error de conexión. Intenta de nuevo.");
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   async function handleGoogleRegister() {
     setIsLoading(true);
     await signIn("google", { callbackUrl: "/dashboard" });
@@ -134,33 +173,125 @@ function RegisterForm() {
 
           {/* User Type Tabs */}
           <div className="mb-8 grid grid-cols-2 gap-2 rounded-md bg-primary-50 p-1">
-            <button
-              type="button"
-              onClick={() => setUserType("student")}
-              className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-all ${
-                userType === "student"
-                  ? "bg-surface text-fg shadow-sm"
-                  : "text-muted hover:text-fg"
-              }`}
-            >
-              <GraduationCap className="h-4 w-4" />
-              Soy Estudiante
-            </button>
-            <button
-              type="button"
-              onClick={() => setUserType("company")}
-              className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-all ${
-                userType === "company"
-                  ? "bg-surface text-fg shadow-sm"
-                  : "text-muted hover:text-fg"
-              }`}
-            >
-              <Building2 className="h-4 w-4" />
-              Soy Empresa
-            </button>
+            {([
+              ["student", "Estudiante", GraduationCap],
+              ["company", "Empresa", Building2],
+              ["professional", "Profesional", Briefcase],
+              ["professor", "Profesor", Presentation],
+            ] as const).map(([value, label, Icon]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => {
+                  setUserType(value);
+                  setError(null);
+                }}
+                className={`flex items-center justify-center gap-2 rounded-md px-4 py-2.5 text-sm font-medium transition-all ${
+                  userType === value
+                    ? "bg-surface text-fg shadow-sm"
+                    : "text-muted hover:text-fg"
+                }`}
+              >
+                <Icon className="h-4 w-4" />
+                {label}
+              </button>
+            ))}
           </div>
 
-          {/* Google Register */}
+          {/* ── Profesional / Profesor: contacto primero, no cuenta ── */}
+          {isContactType && (
+            joinSent ? (
+              <div className="rounded-md bg-success-bg p-6 text-center">
+                <CheckCircle2 className="mx-auto h-8 w-8 text-success" />
+                <p className="mt-3 text-sm font-medium text-fg">
+                  Solicitud enviada
+                </p>
+                <p className="mt-1 text-sm text-muted">
+                  Te contactaremos para darte de alta con un correo institucional
+                  personalizado de la asociación.
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="mb-6 rounded-md bg-primary-50 p-4 text-sm text-muted">
+                  Los {userType === "professor" ? "profesores" : "profesionales"} no
+                  se registran directamente. Déjanos tus datos y te crearemos un{" "}
+                  <span className="font-medium text-fg">correo institucional
+                  personalizado</span> tras contactar contigo.
+                </div>
+                <form onSubmit={handleJoinRequest} className="space-y-5">
+                  <div>
+                    <label htmlFor="joinName" className="block text-sm font-medium text-fg">
+                      Nombre Completo
+                    </label>
+                    <div className="relative mt-1">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <User className="h-5 w-5 text-muted" />
+                      </div>
+                      <input
+                        id="joinName" type="text" required
+                        value={joinName}
+                        onChange={(e) => setJoinName(e.target.value)}
+                        placeholder="Tu nombre"
+                        className={inputBase}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="joinEmail" className="block text-sm font-medium text-fg">
+                      Email de contacto
+                    </label>
+                    <div className="relative mt-1">
+                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                        <Mail className="h-5 w-5 text-muted" />
+                      </div>
+                      <input
+                        id="joinEmail" type="email" required
+                        value={joinEmail}
+                        onChange={(e) => setJoinEmail(e.target.value)}
+                        placeholder="tu@correo.com"
+                        className={inputBase}
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label htmlFor="joinMessage" className="block text-sm font-medium text-fg">
+                      Mensaje <span className="text-muted">(opcional)</span>
+                    </label>
+                    <div className="relative mt-1">
+                      <div className="pointer-events-none absolute top-3 left-0 flex items-start pl-3">
+                        <FileText className="h-5 w-5 text-muted" />
+                      </div>
+                      <textarea
+                        id="joinMessage" rows={3}
+                        value={joinMessage}
+                        onChange={(e) => setJoinMessage(e.target.value)}
+                        placeholder="Cuéntanos tu perfil y cómo te gustaría participar..."
+                        className="block w-full rounded-md border border-border bg-surface py-3 pl-10 pr-3 text-sm text-fg placeholder:text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-3 text-sm font-medium text-white transition-all hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                        Enviando...
+                      </>
+                    ) : (
+                      "Solicitar contacto"
+                    )}
+                  </button>
+                </form>
+              </>
+            )
+          )}
+
+          {/* Google Register — solo para estudiante/empresa */}
+          {!isContactType && (
           <button
             type="button"
             onClick={handleGoogleRegister}
@@ -175,8 +306,10 @@ function RegisterForm() {
             </svg>
             Google
           </button>
+          )}
 
           {/* Divider */}
+          {!isContactType && (
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
               <div className="w-full border-t border-border" />
@@ -187,8 +320,10 @@ function RegisterForm() {
               </span>
             </div>
           </div>
+          )}
 
-          {/* Register Form */}
+          {/* Register Form — solo estudiante/empresa */}
+          {!isContactType && (
           <form onSubmit={handleSubmit} className="space-y-5">
             {userType === "student" && (
               <>
@@ -391,6 +526,7 @@ function RegisterForm() {
               )}
             </button>
           </form>
+          )}
         </div>
 
         <p className="mt-6 text-center text-sm text-muted">

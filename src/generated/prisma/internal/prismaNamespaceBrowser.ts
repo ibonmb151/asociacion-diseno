@@ -52,6 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
+  NewsletterEdition: 'NewsletterEdition',
+  NewsletterSubscriber: 'NewsletterSubscriber',
+  JoinRequest: 'JoinRequest',
   StudentProfile: 'StudentProfile',
   Project: 'Project',
   ForumPost: 'ForumPost',
@@ -97,6 +100,47 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const NewsletterEditionScalarFieldEnum = {
+  id: 'id',
+  number: 'number',
+  title: 'title',
+  summary: 'summary',
+  pdfUrl: 'pdfUrl',
+  coverUrl: 'coverUrl',
+  sentAt: 'sentAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy'
+} as const
+
+export type NewsletterEditionScalarFieldEnum = (typeof NewsletterEditionScalarFieldEnum)[keyof typeof NewsletterEditionScalarFieldEnum]
+
+
+export const NewsletterSubscriberScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  active: 'active',
+  token: 'token',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type NewsletterSubscriberScalarFieldEnum = (typeof NewsletterSubscriberScalarFieldEnum)[keyof typeof NewsletterSubscriberScalarFieldEnum]
+
+
+export const JoinRequestScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  type: 'type',
+  message: 'message',
+  handled: 'handled',
+  createdAt: 'createdAt'
+} as const
+
+export type JoinRequestScalarFieldEnum = (typeof JoinRequestScalarFieldEnum)[keyof typeof JoinRequestScalarFieldEnum]
 
 
 export const StudentProfileScalarFieldEnum = {

@@ -18,9 +18,13 @@ import {
   Users,
   ChevronDown,
   Home,
+  Newspaper,
 } from "lucide-react";
 
-const publicLinks = [{ href: "/", label: "Inicio", icon: Home }];
+const publicLinks = [
+  { href: "/", label: "Inicio", icon: Home },
+  { href: "/newsletter", label: "El Semanal", icon: Newspaper },
+];
 
 const protectedLinks = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },

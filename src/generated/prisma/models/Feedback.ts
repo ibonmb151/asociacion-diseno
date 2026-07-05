@@ -475,14 +475,6 @@ export type FeedbackUncheckedUpdateManyWithoutProjectNestedInput = {
   deleteMany?: Prisma.FeedbackScalarWhereInput | Prisma.FeedbackScalarWhereInput[]
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type FeedbackCreateWithoutUserInput = {
   id?: string
   rating: number

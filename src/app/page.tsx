@@ -496,6 +496,7 @@ function FooterSection() {
               <FooterLink href="/portfolio" label="Portfolio" />
               <FooterLink href="/forum" label="Foro" />
               <FooterLink href="/proposals" label="Propuestas" />
+              <FooterLink href="/newsletter" label="El Semanal" />
               <FooterLink href="/networking" label="Networking" />
             </ul>
           </div>
