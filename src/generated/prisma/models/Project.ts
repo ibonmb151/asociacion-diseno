@@ -487,10 +487,6 @@ export type ProjectUpdatetagsInput = {
   push?: string | string[]
 }
 
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type ProjectCreateNestedOneWithoutFeedbacksInput = {
   create?: Prisma.XOR<Prisma.ProjectCreateWithoutFeedbacksInput, Prisma.ProjectUncheckedCreateWithoutFeedbacksInput>
   connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutFeedbacksInput

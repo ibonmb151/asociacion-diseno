@@ -7,6 +7,9 @@ import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma) as any,
+  // Infiere el origen de las cabeceras de la petición en vez de un NEXTAUTH_URL
+  // fijo — así auth funciona en cualquier puerto (dev) y al desplegar.
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: {
     signIn: "/auth/login",

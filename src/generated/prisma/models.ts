@@ -9,6 +9,9 @@
  * 🟢 You can import this file directly.
  */
 export type * from './models/User'
+export type * from './models/NewsletterEdition'
+export type * from './models/NewsletterSubscriber'
+export type * from './models/JoinRequest'
 export type * from './models/StudentProfile'
 export type * from './models/Project'
 export type * from './models/ForumPost'

@@ -283,7 +283,7 @@ function FooterSection() {
           <div>
             <p className="mb-4 font-body text-xs font-medium uppercase tracking-widest text-muted">Plataforma</p>
             <ul className="space-y-2.5">
-              {[["Portfolio", "/portfolio"], ["Foro", "/forum"], ["Challenges", "/proposals"], ["Empresas", "/companies"]].map(([label, href]) => (
+              {[["Portfolio", "/portfolio"], ["Foro", "/forum"], ["Challenges", "/proposals"], ["Empresas", "/companies"], ["El Semanal", "/newsletter"]].map(([label, href]) => (
                 <li key={label}><Link href={href} className="text-sm text-muted transition-colors hover:text-fg">{label}</Link></li>
               ))}
             </ul>

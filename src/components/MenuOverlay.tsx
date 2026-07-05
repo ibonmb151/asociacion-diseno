@@ -17,6 +17,7 @@ const NAV_LINKS = [
   { href: "/students",  label: "Estudiantes" },
   { href: "/companies", label: "Empresas" },
   { href: "/proposals", label: "Propuestas" },
+  { href: "/newsletter", label: "El Semanal" },
 ];
 
 const SOCIAL_LINKS = [
